@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-labelledby="title desc" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace">
+  <title id="title">Sherlock AI — open source AI research agent</title>
+  <desc id="desc">Sherlock AI hero banner. Shows the agent tree: four agents (Researcher, Reviewer, Writer, Verifier) and three tools (AlphaXiv, Web Search, Docker).</desc>
+
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#161b22" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="lamp" cx="0.1" cy="0" r="0.7">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#f59e0b" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Base -->
+  <rect width="1200" height="600" fill="#0d1117"/>
+  <rect width="1200" height="600" fill="url(#grid)" opacity="0.6"/>
+  <rect width="1200" height="600" fill="url(#lamp)"/>
+
+  <!-- Magnifying glass -->
+  <g transform="translate(60, 78)" stroke="#f59e0b" stroke-linecap="round" fill="none">
+    <circle cx="22" cy="22" r="17" stroke-width="3.5"/>
+    <line x1="34" y1="34" x2="48" y2="48" stroke-width="3.5"/>
+  </g>
+
+  <!-- Title -->
+  <text x="130" y="118" font-size="56" font-weight="700" fill="#f0f6fc" letter-spacing="2.5">SHERLOCK AI</text>
+
+  <!-- Subtitle -->
+  <text x="130" y="156" font-size="18" fill="#8b949e">The open source AI research agent</text>
+
+  <!-- Tag chips -->
+  <g font-size="11" font-weight="600" letter-spacing="0.8">
+    <g transform="translate(130, 180)">
+      <rect width="74" height="22" rx="11" fill="none" stroke="#30363d"/>
+      <text x="37" y="15" fill="#8b949e" text-anchor="middle">CLI · MIT</text>
+    </g>
+    <g transform="translate(214, 180)">
+      <rect width="92" height="22" rx="11" fill="none" stroke="#30363d"/>
+      <text x="46" y="15" fill="#8b949e" text-anchor="middle">TYPESCRIPT</text>
+    </g>
+    <g transform="translate(316, 180)">
+      <rect width="118" height="22" rx="11" fill="none" stroke="#f59e0b" stroke-opacity="0.4"/>
+      <text x="59" y="15" fill="#f59e0b" text-anchor="middle">RESEARCH AGENT</text>
+    </g>
+  </g>
+
+  <!-- Terminal frame -->
+  <g transform="translate(60, 234)">
+    <rect width="1080" height="328" rx="10" fill="#161b22" stroke="#30363d"/>
+    <!-- Title bar -->
+    <path d="M 0 10 a 10 10 0 0 1 10 -10 h 1060 a 10 10 0 0 1 10 10 v 26 h -1080 z" fill="#21262d"/>
+    <line x1="0" y1="36" x2="1080" y2="36" stroke="#30363d"/>
+    <!-- Traffic lights -->
+    <circle cx="22" cy="18" r="6" fill="#ff5f57"/>
+    <circle cx="42" cy="18" r="6" fill="#febc2e"/>
+    <circle cx="62" cy="18" r="6" fill="#28c841"/>
+    <!-- Filename -->
+    <text x="540" y="22" font-size="12" fill="#8b949e" text-anchor="middle">— sherlock-ai $ tree —</text>
+
+    <!-- Tree content -->
+    <g font-size="15">
+      <!-- Prompt -->
+      <text y="74">
+        <tspan x="30" fill="#28c841" font-weight="700">$</tspan>
+        <tspan fill="#c9d1d9"> sherlock-ai tree --depth 2</tspan>
+      </text>
+
+      <!-- Root -->
+      <text x="30" y="106" fill="#79c0ff" font-weight="700">sherlock-ai/</text>
+
+      <!-- agents/ branch -->
+      <text x="30" y="134" fill="#484f58">├──</text>
+      <text x="100" y="134" fill="#79c0ff" font-weight="700">agents/</text>
+
+      <text x="30" y="158" fill="#484f58">│   ├──</text>
+      <text x="130" y="158" fill="#f59e0b" font-weight="600">Researcher</text>
+      <text x="290" y="158" fill="#6e7681">→</text>
+      <text x="312" y="158" fill="#c9d1d9">gather evidence across papers, web, repos</text>
+
+      <text x="30" y="182" fill="#484f58">│   ├──</text>
+      <text x="130" y="182" fill="#f59e0b" font-weight="600">Reviewer</text>
+      <text x="290" y="182" fill="#6e7681">→</text>
+      <text x="312" y="182" fill="#c9d1d9">peer review with severity-graded feedback</text>
+
+      <text x="30" y="206" fill="#484f58">│   ├──</text>
+      <text x="130" y="206" fill="#f59e0b" font-weight="600">Writer</text>
+      <text x="290" y="206" fill="#6e7681">→</text>
+      <text x="312" y="206" fill="#c9d1d9">structured drafts from research notes</text>
+
+      <text x="30" y="230" fill="#484f58">│   └──</text>
+      <text x="130" y="230" fill="#f59e0b" font-weight="600">Verifier</text>
+      <text x="290" y="230" fill="#6e7681">→</text>
+      <text x="312" y="230" fill="#c9d1d9">inline citations and source URL verification</text>
+
+      <!-- tools/ branch -->
+      <text x="30" y="262" fill="#484f58">└──</text>
+      <text x="100" y="262" fill="#79c0ff" font-weight="700">tools/</text>
+
+      <text x="30" y="286" fill="#484f58">    ├──</text>
+      <text x="130" y="286" fill="#10b981" font-weight="600">AlphaXiv</text>
+      <text x="290" y="286" fill="#6e7681">→</text>
+      <text x="312" y="286" fill="#c9d1d9">paper search, Q&amp;A, code reading</text>
+
+      <text x="30" y="310" fill="#484f58">    ├──</text>
+      <text x="130" y="310" fill="#10b981" font-weight="600">Web Search</text>
+      <text x="290" y="310" fill="#6e7681">→</text>
+      <text x="312" y="310" fill="#c9d1d9">Exa, Perplexity, or Gemini API</text>
+
+      <text x="30" y="334" font-size="15">
+        <tspan x="30" fill="#484f58">    └──</tspan>
+      </text>
+      <text x="130" y="334" fill="#10b981" font-weight="600">Docker</text>
+      <text x="290" y="334" fill="#6e7681">→</text>
+      <text x="312" y="334" fill="#c9d1d9">isolated container execution</text>
+    </g>
+  </g>
+</svg>

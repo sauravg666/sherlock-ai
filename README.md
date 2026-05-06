@@ -1,9 +1,8 @@
 <p align="center">
   <a href="https://sherlock-ai.dev">
-    <img src="assets/hero.png" alt="Sherlock CLI" width="800" />
+    <img src="assets/hero.svg" alt="Sherlock AI — open source AI research agent" width="900" />
   </a>
 </p>
-<p align="center">The open source AI research agent.</p>
 <p align="center">
   <a href="https://sherlock-ai.dev/docs"><img alt="Docs" src="https://img.shields.io/badge/docs-sherlock-ai.dev-0d9668?style=flat-square" /></a>
   <a href="https://github.com/sauravg666/sherlock-ai/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/sauravg666/sherlock-ai?style=flat-square" /></a>
