@@ -1,7 +1,5 @@
 <p align="center">
-  <a href="https://sherlock-ai.dev">
-    <img src="assets/hero.svg" alt="Sherlock AI — open source AI research agent" width="900" />
-  </a>
+  <img src="assets/hero.svg" alt="Sherlock AI — open source AI research agent" width="900" />
 </p>
 <p align="center">
   <a href="https://sherlock-ai.dev/docs"><img alt="Docs" src="https://img.shields.io/badge/docs-sherlock-ai.dev-0d9668?style=flat-square" /></a>
@@ -166,12 +164,6 @@ Built on [Pi](https://github.com/badlogic/pi-mono) for the agent runtime, [alpha
     <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=sauravg666/sherlock-ai&type=date&legend=top-left" />
   </picture>
 </a>
-
----
-
-### Acknowledgements
-
-Sherlock AI is a rebrand and fork of [Feynman](https://github.com/getcompanion-ai/feynman) by [Companion, Inc.](https://github.com/getcompanion-ai), released under the MIT License. All original credit for the architecture, agent design, and skill library belongs to the upstream authors. The original copyright notice is retained in the [LICENSE](LICENSE).
 
 ---
 
