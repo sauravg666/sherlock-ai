@@ -1,5 +1,5 @@
 {
-  "name": "@companion-ai/feynman",
+  "name": "sherlock-ai",
   "version": "0.2.43",
   "description": "Research-first CLI agent built on Pi and alphaXiv",
   "license": "MIT",
@@ -8,17 +8,17 @@
     "node": ">=20.19.0 <23"
   },
   "bin": {
-    "feynman": "bin/feynman.js"
+    "sherlock-ai": "bin/sherlock-ai.js"
   },
   "files": [
     "bin/",
     "dist/",
     "metadata/",
-    ".feynman/agents/",
-    ".feynman/runtime-workspace.tgz",
-    ".feynman/settings.json",
-    ".feynman/SYSTEM.md",
-    ".feynman/themes/",
+    ".sherlock-ai/agents/",
+    ".sherlock-ai/runtime-workspace.tgz",
+    ".sherlock-ai/settings.json",
+    ".sherlock-ai/SYSTEM.md",
+    ".sherlock-ai/themes/",
     "extensions/",
     "prompts/",
     "logo.mjs",
@@ -47,7 +47,7 @@
     "dev": "tsx src/index.ts",
     "prepack": "node ./scripts/clean-publish-artifacts.mjs && npm run build && node ./scripts/prepare-runtime-workspace.mjs",
     "start": "tsx src/index.ts",
-    "start:dist": "node ./bin/feynman.js",
+    "start:dist": "node ./bin/sherlock-ai.js",
     "test": "node --import tsx --test --test-concurrency=1 tests/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
@@ -106,10 +106,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/getcompanion-ai/feynman.git"
+    "url": "git+https://github.com/sauravg666/sherlock-ai.git"
   },
-  "homepage": "https://github.com/getcompanion-ai/feynman#readme",
+  "homepage": "https://github.com/sauravg666/sherlock-ai#readme",
   "bugs": {
-    "url": "https://github.com/getcompanion-ai/feynman/issues"
+    "url": "https://github.com/sauravg666/sherlock-ai/issues"
   }
 }

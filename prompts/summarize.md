@@ -18,10 +18,10 @@ Tier 1 (below the Tier-1 threshold) is a deliberate exception: direct injection 
 
 Support both inline flags and environment variables so users can tune context-window behavior per run or globally.
 
-- `--window-size <chars>` or `FEYNMAN_SUMMARIZE_WINDOW_CHARS` (default: `6000`)
-- `--overlap <chars>` or `FEYNMAN_SUMMARIZE_OVERLAP_CHARS` (default: `500`)
-- `--tier1-threshold <chars>` or `FEYNMAN_SUMMARIZE_TIER1_THRESHOLD` (default: `8000`)
-- `--tier2-threshold <chars>` or `FEYNMAN_SUMMARIZE_TIER2_THRESHOLD` (default: `60000`)
+- `--window-size <chars>` or `SHERLOCK_AI_SUMMARIZE_WINDOW_CHARS` (default: `6000`)
+- `--overlap <chars>` or `SHERLOCK_AI_SUMMARIZE_OVERLAP_CHARS` (default: `500`)
+- `--tier1-threshold <chars>` or `SHERLOCK_AI_SUMMARIZE_TIER1_THRESHOLD` (default: `8000`)
+- `--tier2-threshold <chars>` or `SHERLOCK_AI_SUMMARIZE_TIER2_THRESHOLD` (default: `60000`)
 
 Rules:
 - Inline flags override environment variables.

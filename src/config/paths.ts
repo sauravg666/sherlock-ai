@@ -2,36 +2,36 @@ import { mkdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { resolve } from "node:path";
 
-export function getFeynmanHome(): string {
-	return resolve(process.env.FEYNMAN_HOME ?? homedir(), ".feynman");
+export function getSherlockHome(): string {
+	return resolve(process.env.SHERLOCK_AI_HOME ?? homedir(), ".sherlock-ai");
 }
 
-export function getFeynmanAgentDir(home = getFeynmanHome()): string {
+export function getSherlockAgentDir(home = getSherlockHome()): string {
 	return resolve(home, "agent");
 }
 
-export function getFeynmanMemoryDir(home = getFeynmanHome()): string {
+export function getSherlockMemoryDir(home = getSherlockHome()): string {
 	return resolve(home, "memory");
 }
 
-export function getFeynmanStateDir(home = getFeynmanHome()): string {
+export function getSherlockStateDir(home = getSherlockHome()): string {
 	return resolve(home, ".state");
 }
 
-export function getDefaultSessionDir(home = getFeynmanHome()): string {
+export function getDefaultSessionDir(home = getSherlockHome()): string {
 	return resolve(home, "sessions");
 }
 
-export function getBootstrapStatePath(home = getFeynmanHome()): string {
-	return resolve(getFeynmanStateDir(home), "bootstrap.json");
+export function getBootstrapStatePath(home = getSherlockHome()): string {
+	return resolve(getSherlockStateDir(home), "bootstrap.json");
 }
 
-export function ensureFeynmanHome(home = getFeynmanHome()): void {
+export function ensureSherlockHome(home = getSherlockHome()): void {
 	for (const dir of [
 		home,
-		getFeynmanAgentDir(home),
-		getFeynmanMemoryDir(home),
-		getFeynmanStateDir(home),
+		getSherlockAgentDir(home),
+		getSherlockMemoryDir(home),
+		getSherlockStateDir(home),
 		getDefaultSessionDir(home),
 	]) {
 		mkdirSync(dir, { recursive: true });

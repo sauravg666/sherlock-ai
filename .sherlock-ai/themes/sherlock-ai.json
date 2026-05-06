@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/badlogic/pi-mono/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json",
-  "name": "feynman",
+  "name": "sherlock-ai",
   "vars": {
     "ink": "#d3c6aa",
     "paper": "#2d353b",

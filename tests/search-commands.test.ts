@@ -32,7 +32,7 @@ function stripAnsi(line: string): string {
 }
 
 test("printSearchStatus marks config path and prints setup hint when web-search.json is missing", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-search-cmds-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-search-cmds-"));
 	const configPath = getPiWebSearchConfigPath(root);
 	const status = getPiWebAccessStatus(loadPiWebAccessConfig(configPath), configPath);
 
@@ -42,8 +42,8 @@ test("printSearchStatus marks config path and prints setup hint when web-search.
 	assert.ok(configLine, "expected Config path line");
 	assert.ok(configLine!.includes("(not created yet)"), `expected '(not created yet)' marker, got: ${configLine}`);
 	assert.ok(
-		output.some((line) => line.toLowerCase().includes("feynman search set")),
-		"expected a hint referencing `feynman search set`",
+		output.some((line) => line.toLowerCase().includes("sherlock-ai search set")),
+		"expected a hint referencing `sherlock-ai search set`",
 	);
 	assert.ok(
 		output.some((line) => line.includes("Gemini browser fallback: disabled")),
@@ -52,7 +52,7 @@ test("printSearchStatus marks config path and prints setup hint when web-search.
 });
 
 test("printSearchStatus omits marker and hint when web-search.json exists", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-search-cmds-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-search-cmds-"));
 	const configPath = getPiWebSearchConfigPath(root);
 	savePiWebAccessConfig({ provider: "auto", searchProvider: "auto" }, configPath);
 	const status = getPiWebAccessStatus(loadPiWebAccessConfig(configPath), configPath);
@@ -63,7 +63,7 @@ test("printSearchStatus omits marker and hint when web-search.json exists", () =
 	assert.ok(configLine, "expected Config path line");
 	assert.ok(!configLine!.includes("(not created yet)"), `did not expect '(not created yet)' marker: ${configLine}`);
 	assert.ok(
-		!output.some((line) => line.toLowerCase().includes("feynman search set")),
+		!output.some((line) => line.toLowerCase().includes("sherlock-ai search set")),
 		"did not expect a setup hint when config exists",
 	);
 });

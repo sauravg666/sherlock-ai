@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { upsertProviderConfig } from "../src/model/models-json.js";
 
 test("upsertProviderConfig creates models.json and merges provider config", () => {
-	const dir = mkdtempSync(join(tmpdir(), "feynman-models-"));
+	const dir = mkdtempSync(join(tmpdir(), "sherlock-ai-models-"));
 	const modelsPath = join(dir, "models.json");
 
 	const first = upsertProviderConfig(modelsPath, "custom", {
@@ -32,7 +32,7 @@ test("upsertProviderConfig creates models.json and merges provider config", () =
 });
 
 test("upsertProviderConfig writes LiteLLM proxy config with master key", () => {
-	const dir = mkdtempSync(join(tmpdir(), "feynman-litellm-"));
+	const dir = mkdtempSync(join(tmpdir(), "sherlock-ai-litellm-"));
 	const modelsPath = join(dir, "models.json");
 
 	const result = upsertProviderConfig(modelsPath, "litellm", {
@@ -53,7 +53,7 @@ test("upsertProviderConfig writes LiteLLM proxy config with master key", () => {
 });
 
 test("upsertProviderConfig writes LiteLLM proxy config without master key", () => {
-	const dir = mkdtempSync(join(tmpdir(), "feynman-litellm-"));
+	const dir = mkdtempSync(join(tmpdir(), "sherlock-ai-litellm-"));
 	const modelsPath = join(dir, "models.json");
 
 	const result = upsertProviderConfig(modelsPath, "litellm", {
@@ -74,7 +74,7 @@ test("upsertProviderConfig writes LiteLLM proxy config without master key", () =
 });
 
 test("upsertProviderConfig rejects provider ids with path traversal chars", () => {
-	const dir = mkdtempSync(join(tmpdir(), "feynman-models-"));
+	const dir = mkdtempSync(join(tmpdir(), "sherlock-ai-models-"));
 	const modelsPath = join(dir, "models.json");
 
 	const withDots = upsertProviderConfig(modelsPath, "../etc/passwd", {

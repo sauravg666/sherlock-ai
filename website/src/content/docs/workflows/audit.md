@@ -22,10 +22,10 @@ From the REPL:
 From the CLI:
 
 ```bash
-feynman audit 2401.12345
+sherlock-ai audit 2401.12345
 ```
 
-When given an arXiv ID, Feynman locates the associated code repository from the paper's links, Papers With Code, or GitHub search. You can also provide the repository URL directly.
+When given an arXiv ID, Sherlock locates the associated code repository from the paper's links, Papers With Code, or GitHub search. You can also provide the repository URL directly.
 
 ## How it works
 

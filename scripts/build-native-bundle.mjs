@@ -22,20 +22,20 @@ function compareSemver(left, right) {
 }
 
 function fail(message) {
-	console.error(`[feynman] ${message}`);
+	console.error(`[sherlock-ai] ${message}`);
 	process.exit(1);
 }
 
 function logStep(message) {
-	console.log(`[feynman] ${message}`);
+	console.log(`[sherlock-ai] ${message}`);
 }
 
 function resolveBundledNodeVersion() {
-	const requestedNodeVersion = process.env.FEYNMAN_BUNDLED_NODE_VERSION?.trim();
+	const requestedNodeVersion = process.env.SHERLOCK_AI_BUNDLED_NODE_VERSION?.trim();
 	if (requestedNodeVersion) {
 		if (compareSemver(parseSemver(requestedNodeVersion), parseSemver(minBundledNodeVersion)) < 0) {
 			fail(
-				`FEYNMAN_BUNDLED_NODE_VERSION=${requestedNodeVersion} is below the supported floor ${minBundledNodeVersion}`,
+				`SHERLOCK_AI_BUNDLED_NODE_VERSION=${requestedNodeVersion} is below the supported floor ${minBundledNodeVersion}`,
 			);
 		}
 		return requestedNodeVersion;
@@ -271,14 +271,14 @@ function installBundledNode(bundleRoot, target, stagingRoot) {
 function writeLauncher(bundleRoot, target) {
 	logStep("writing launchers...");
 	if (target.launcher === "unix") {
-		const launcherPath = resolve(bundleRoot, "feynman");
+		const launcherPath = resolve(bundleRoot, "sherlock-ai");
 		writeFileSync(
 			launcherPath,
 			[
 				"#!/bin/sh",
 				"set -eu",
 				'ROOT="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"',
-				'exec "$ROOT/node/bin/node" "$ROOT/app/bin/feynman.js" "$@"',
+				'exec "$ROOT/node/bin/node" "$ROOT/app/bin/sherlock-ai.js" "$@"',
 				"",
 			].join("\n"),
 			"utf8",
@@ -288,22 +288,22 @@ function writeLauncher(bundleRoot, target) {
 	}
 
 	writeFileSync(
-		resolve(bundleRoot, "feynman.cmd"),
+		resolve(bundleRoot, "sherlock-ai.cmd"),
 		[
 			"@echo off",
 			"setlocal",
 			'set "ROOT=%~dp0"',
 			'if "%ROOT:~-1%"=="\\" set "ROOT=%ROOT:~0,-1%"',
-			'"%ROOT%\\node\\node.exe" "%ROOT%\\app\\bin\\feynman.js" %*',
+			'"%ROOT%\\node\\node.exe" "%ROOT%\\app\\bin\\sherlock-ai.js" %*',
 			"",
 		].join("\r\n"),
 		"utf8",
 	);
 	writeFileSync(
-		resolve(bundleRoot, "feynman.ps1"),
+		resolve(bundleRoot, "sherlock-ai.ps1"),
 		[
 			'$Root = Split-Path -Parent $MyInvocation.MyCommand.Path',
-			'& "$Root\\node\\node.exe" "$Root\\app\\bin\\feynman.js" @args',
+			'& "$Root\\node\\node.exe" "$Root\\app\\bin\\sherlock-ai.js" @args',
 			"",
 		].join("\r\n"),
 		"utf8",
@@ -317,7 +317,7 @@ function validateBundle(bundleRoot, target) {
 			? resolve(bundleRoot, "node", "node.exe")
 			: resolve(bundleRoot, "node", "bin", "node");
 
-	run(nodeExecutable, ["-e", "require('./app/.feynman/npm/node_modules/better-sqlite3'); console.log('better-sqlite3 ok')"], {
+	run(nodeExecutable, ["-e", "require('./app/.sherlock-ai/npm/node_modules/better-sqlite3'); console.log('better-sqlite3 ok')"], {
 		cwd: bundleRoot,
 	});
 }
@@ -355,9 +355,9 @@ function packBundle(bundleRoot, target, outDir) {
 
 function main() {
 	const target = detectTarget();
-	const stagingRoot = mkdtempSync(join(tmpdir(), "feynman-native-"));
+	const stagingRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-native-"));
 	const outDir = resolve(appRoot, "dist", "release");
-	const bundleRoot = resolve(stagingRoot, `feynman-${packageJson.version}-${target.id}`);
+	const bundleRoot = resolve(stagingRoot, `sherlock-ai-${packageJson.version}-${target.id}`);
 	const appDir = resolve(bundleRoot, "app");
 
 	mkdirSync(outDir, { recursive: true });
@@ -367,10 +367,10 @@ function main() {
 	copyPackageFiles(appDir);
 	installAppDependencies(appDir, stagingRoot);
 
-	const appFeynmanDir = resolve(appDir, ".feynman");
+	const appSherlockDir = resolve(appDir, ".sherlock-ai");
 	logStep("extracting runtime workspace...");
-	extractTarball(resolve(appFeynmanDir, "runtime-workspace.tgz"), appFeynmanDir, "-xzf");
-	rmSync(resolve(appFeynmanDir, "runtime-workspace.tgz"), { force: true });
+	extractTarball(resolve(appSherlockDir, "runtime-workspace.tgz"), appSherlockDir, "-xzf");
+	rmSync(resolve(appSherlockDir, "runtime-workspace.tgz"), { force: true });
 	logStep("patching embedded Pi runtime...");
 	run(process.execPath, [resolve(appDir, "scripts", "patch-embedded-pi.mjs")], { cwd: appDir });
 
@@ -379,7 +379,7 @@ function main() {
 	validateBundle(bundleRoot, target);
 
 	const archivePath = packBundle(bundleRoot, target, outDir);
-	console.log(`[feynman] native bundle ready: ${archivePath}`);
+	console.log(`[sherlock-ai] native bundle ready: ${archivePath}`);
 }
 
 main();

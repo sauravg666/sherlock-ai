@@ -14,8 +14,8 @@ export type PiRuntimeOptions = {
 	appRoot: string;
 	workingDir: string;
 	sessionDir: string;
-	feynmanAgentDir: string;
-	feynmanVersion?: string;
+	sherlockAgentDir: string;
+	sherlockVersion?: string;
 	mode?: "text" | "json" | "rpc";
 	thinkingLevel?: string;
 	explicitModelSpec?: string;
@@ -24,16 +24,16 @@ export type PiRuntimeOptions = {
 	preLaunchNotice?: string;
 };
 
-export function getFeynmanNpmPrefixPath(feynmanAgentDir: string): string {
-	return resolve(dirname(feynmanAgentDir), "npm-global");
+export function getSherlockNpmPrefixPath(sherlockAgentDir: string): string {
+	return resolve(dirname(sherlockAgentDir), "npm-global");
 }
 
-export function applyFeynmanPackageManagerEnv(feynmanAgentDir: string): string {
-	const feynmanNpmPrefixPath = getFeynmanNpmPrefixPath(feynmanAgentDir);
-	process.env.FEYNMAN_NPM_PREFIX = feynmanNpmPrefixPath;
-	process.env.NPM_CONFIG_PREFIX = feynmanNpmPrefixPath;
-	process.env.npm_config_prefix = feynmanNpmPrefixPath;
-	return feynmanNpmPrefixPath;
+export function applySherlockPackageManagerEnv(sherlockAgentDir: string): string {
+	const sherlockNpmPrefixPath = getSherlockNpmPrefixPath(sherlockAgentDir);
+	process.env.SHERLOCK_AI_NPM_PREFIX = sherlockNpmPrefixPath;
+	process.env.NPM_CONFIG_PREFIX = sherlockNpmPrefixPath;
+	process.env.npm_config_prefix = sherlockNpmPrefixPath;
+	return sherlockNpmPrefixPath;
 }
 
 export function resolvePiPaths(appRoot: string) {
@@ -48,8 +48,8 @@ export function resolvePiPaths(appRoot: string) {
 		tsxLoaderPath: resolve(appRoot, "node_modules", "tsx", "dist", "loader.mjs"),
 		researchToolsPath: resolve(appRoot, "extensions", "research-tools.ts"),
 		promptTemplatePath: resolve(appRoot, "prompts"),
-		systemPromptPath: resolve(appRoot, ".feynman", "SYSTEM.md"),
-		piWorkspaceNodeModulesPath: resolve(appRoot, ".feynman", "npm", "node_modules"),
+		systemPromptPath: resolve(appRoot, ".sherlock-ai", "SYSTEM.md"),
+		piWorkspaceNodeModulesPath: resolve(appRoot, ".sherlock-ai", "npm", "node_modules"),
 		nodeModulesBinPath: resolve(appRoot, "node_modules", ".bin"),
 	};
 }
@@ -118,12 +118,12 @@ export function buildPiEnv(
 	paths: PiPaths = resolvePiPaths(options.appRoot),
 	executables?: ResolvedExecutables,
 ): NodeJS.ProcessEnv {
-	const feynmanNpmPrefixPath = getFeynmanNpmPrefixPath(options.feynmanAgentDir);
-	const feynmanNpmBinPath = resolve(feynmanNpmPrefixPath, "bin");
-	const feynmanWebSearchConfigPath = resolve(dirname(options.feynmanAgentDir), "web-search.json");
+	const sherlockNpmPrefixPath = getSherlockNpmPrefixPath(options.sherlockAgentDir);
+	const sherlockNpmBinPath = resolve(sherlockNpmPrefixPath, "bin");
+	const sherlockWebSearchConfigPath = resolve(dirname(options.sherlockAgentDir), "web-search.json");
 
 	const currentPath = process.env.PATH ?? "";
-	const binEntries = [paths.nodeModulesBinPath, resolve(paths.piWorkspaceNodeModulesPath, ".bin"), feynmanNpmBinPath];
+	const binEntries = [paths.nodeModulesBinPath, resolve(paths.piWorkspaceNodeModulesPath, ".bin"), sherlockNpmBinPath];
 	const binPath = binEntries.join(delimiter);
 	const pandocPath = process.env.PANDOC_PATH ?? executables?.pandoc ?? resolveExecutable("pandoc", PANDOC_FALLBACK_PATHS);
 	const mermaidPath = process.env.MERMAID_CLI_PATH ?? executables?.mermaid ?? resolveExecutable("mmdc", MERMAID_FALLBACK_PATHS);
@@ -132,27 +132,27 @@ export function buildPiEnv(
 	return {
 		...process.env,
 		PATH: `${binPath}${delimiter}${currentPath}`,
-		FEYNMAN_VERSION: options.feynmanVersion,
-		FEYNMAN_SESSION_DIR: options.sessionDir,
-		FEYNMAN_MEMORY_DIR: resolve(dirname(options.feynmanAgentDir), "memory"),
-		FEYNMAN_WEB_SEARCH_CONFIG: feynmanWebSearchConfigPath,
-		FEYNMAN_NODE_EXECUTABLE: process.execPath,
-		FEYNMAN_BIN_PATH: resolve(options.appRoot, "bin", "feynman.js"),
-		FEYNMAN_PI_CLI_PATH: paths.piCliPath,
-		FEYNMAN_NPM_PREFIX: feynmanNpmPrefixPath,
-		// Ensure the Pi child process uses Feynman's agent dir for auth/models/settings.
-		// Patched Pi uses FEYNMAN_CODING_AGENT_DIR; upstream Pi uses PI_CODING_AGENT_DIR.
-		FEYNMAN_CODING_AGENT_DIR: options.feynmanAgentDir,
-		PI_CODING_AGENT_DIR: options.feynmanAgentDir,
+		SHERLOCK_AI_VERSION: options.sherlockVersion,
+		SHERLOCK_AI_SESSION_DIR: options.sessionDir,
+		SHERLOCK_AI_MEMORY_DIR: resolve(dirname(options.sherlockAgentDir), "memory"),
+		SHERLOCK_AI_WEB_SEARCH_CONFIG: sherlockWebSearchConfigPath,
+		SHERLOCK_AI_NODE_EXECUTABLE: process.execPath,
+		SHERLOCK_AI_BIN_PATH: resolve(options.appRoot, "bin", "sherlock-ai.js"),
+		SHERLOCK_AI_PI_CLI_PATH: paths.piCliPath,
+		SHERLOCK_AI_NPM_PREFIX: sherlockNpmPrefixPath,
+		// Ensure the Pi child process uses Sherlock's agent dir for auth/models/settings.
+		// Patched Pi uses SHERLOCK_AI_CODING_AGENT_DIR; upstream Pi uses PI_CODING_AGENT_DIR.
+		SHERLOCK_AI_CODING_AGENT_DIR: options.sherlockAgentDir,
+		PI_CODING_AGENT_DIR: options.sherlockAgentDir,
 		PANDOC_PATH: pandocPath,
 		PI_HARDWARE_CURSOR: process.env.PI_HARDWARE_CURSOR ?? "1",
 		PI_SKIP_VERSION_CHECK: process.env.PI_SKIP_VERSION_CHECK ?? "1",
 		MERMAID_CLI_PATH: mermaidPath,
 		PUPPETEER_EXECUTABLE_PATH: browserPath,
-		// Always pin npm's global prefix to the Feynman workspace. npm injects
+		// Always pin npm's global prefix to the Sherlock workspace. npm injects
 		// lowercase config vars into child processes, which would otherwise leak
 		// the caller's global prefix into Pi.
-		NPM_CONFIG_PREFIX: feynmanNpmPrefixPath,
-		npm_config_prefix: feynmanNpmPrefixPath,
+		NPM_CONFIG_PREFIX: sherlockNpmPrefixPath,
+		npm_config_prefix: sherlockNpmPrefixPath,
 	};
 }

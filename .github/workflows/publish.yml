@@ -31,7 +31,7 @@ jobs:
         run: |
           LOCAL=$(node -p "require('./package.json').version")
           echo "version=$LOCAL" >> "$GITHUB_OUTPUT"
-          PUBLISHED=$(npm view @companion-ai/feynman version 2>/dev/null || true)
+          PUBLISHED=$(npm view sherlock-ai version 2>/dev/null || true)
           if [ "$PUBLISHED" = "$LOCAL" ]; then
             echo "should_publish_npm=false" >> "$GITHUB_OUTPUT"
           else
@@ -113,19 +113,19 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           tmp=$(mktemp -d)
-          tar -xzf "dist/release/feynman-${VERSION}-${{ matrix.id }}.tar.gz" -C "$tmp"
-          "$tmp/feynman-${VERSION}-${{ matrix.id }}/feynman" --help >/tmp/feynman-help.out
-          head -20 /tmp/feynman-help.out
+          tar -xzf "dist/release/sherlock-ai-${VERSION}-${{ matrix.id }}.tar.gz" -C "$tmp"
+          "$tmp/sherlock-ai-${VERSION}-${{ matrix.id }}/sherlock-ai" --help >/tmp/sherlock-ai-help.out
+          head -20 /tmp/sherlock-ai-help.out
       - name: Smoke native bundle (Windows)
         if: matrix.id == 'win32-x64'
         shell: pwsh
         run: |
           $version = node -p "require('./package.json').version"
-          $tmp = Join-Path $env:RUNNER_TEMP ("feynman-smoke-" + [guid]::NewGuid().ToString("N"))
+          $tmp = Join-Path $env:RUNNER_TEMP ("sherlock-ai-smoke-" + [guid]::NewGuid().ToString("N"))
           New-Item -ItemType Directory -Path $tmp | Out-Null
-          Expand-Archive -LiteralPath "dist/release/feynman-$version-win32-x64.zip" -DestinationPath $tmp -Force
-          $bundleRoot = Join-Path $tmp "feynman-$version-win32-x64"
-          & (Join-Path $bundleRoot "feynman.cmd") --help | Select-Object -First 20
+          Expand-Archive -LiteralPath "dist/release/sherlock-ai-$version-win32-x64.zip" -DestinationPath $tmp -Force
+          $bundleRoot = Join-Path $tmp "sherlock-ai-$version-win32-x64"
+          & (Join-Path $bundleRoot "sherlock-ai.cmd") --help | Select-Object -First 20
       - uses: actions/upload-artifact@v4
         with:
           name: native-${{ matrix.id }}

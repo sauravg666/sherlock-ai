@@ -5,25 +5,25 @@ section: Tools
 order: 1
 ---
 
-AlphaXiv is the primary academic paper search and retrieval tool in Feynman. It provides access to a vast corpus of research papers, discussion threads, citation metadata, and full-text PDFs. The researcher agent uses AlphaXiv as its primary source for academic content.
+AlphaXiv is the primary academic paper search and retrieval tool in Sherlock. It provides access to a vast corpus of research papers, discussion threads, citation metadata, and full-text PDFs. The researcher agent uses AlphaXiv as its primary source for academic content.
 
 ## Authentication
 
 AlphaXiv requires authentication. Set it up during initial setup or at any time:
 
 ```bash
-feynman alpha login
+sherlock-ai alpha login
 ```
 
 Check your authentication status:
 
 ```bash
-feynman alpha status
+sherlock-ai alpha status
 ```
 
 ## What it provides
 
-AlphaXiv gives Feynman access to several capabilities that power the research workflows:
+AlphaXiv gives Sherlock access to several capabilities that power the research workflows:
 
 - **Paper search** -- Find papers by topic, author, keyword, or arXiv ID (`alpha search`)
 - **Full-text retrieval** -- Download and parse complete PDFs for in-depth reading (`alpha get`)
@@ -34,7 +34,7 @@ AlphaXiv gives Feynman access to several capabilities that power the research wo
 
 ## How it is used
 
-Feynman ships an `alpha-research` skill that teaches the agent to use the `alpha` CLI for paper operations. The researcher agent uses it automatically during workflows like deep research, literature review, and peer review. When you provide an arXiv ID (like `2401.12345`), the agent fetches the paper via `alpha get`.
+Sherlock ships an `alpha-research` skill that teaches the agent to use the `alpha` CLI for paper operations. The researcher agent uses it automatically during workflows like deep research, literature review, and peer review. When you provide an arXiv ID (like `2401.12345`), the agent fetches the paper via `alpha get`.
 
 You can also use the `alpha` CLI directly from the terminal:
 
@@ -47,8 +47,8 @@ alpha code https://github.com/org/repo src/model.py
 
 ## Configuration
 
-Authentication tokens are stored in `~/.feynman/auth/` and persist across sessions. No additional configuration is needed beyond logging in.
+Authentication tokens are stored in `~/.sherlock-ai/auth/` and persist across sessions. No additional configuration is needed beyond logging in.
 
 ## Without AlphaXiv
 
-If you choose not to authenticate with AlphaXiv, Feynman still functions but with reduced academic search capabilities. It falls back to web search for finding papers, which works for well-known work but misses the citation metadata, discussion threads, and full-text access that AlphaXiv provides. For serious research workflows, AlphaXiv authentication is strongly recommended.
+If you choose not to authenticate with AlphaXiv, Sherlock still functions but with reduced academic search capabilities. It falls back to web search for finding papers, which works for well-known work but misses the citation metadata, discussion threads, and full-text access that AlphaXiv provides. For serious research workflows, AlphaXiv authentication is strongly recommended.

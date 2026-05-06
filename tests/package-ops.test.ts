@@ -17,7 +17,7 @@ function createBundledWorkspace(
 	dependenciesByPackage: Record<string, Record<string, string>> = {},
 ): void {
 	for (const packageName of packageNames) {
-		const packageDir = resolve(appRoot, ".feynman", "npm", "node_modules", packageName);
+		const packageDir = resolve(appRoot, ".sherlock-ai", "npm", "node_modules", packageName);
 		mkdirSync(packageDir, { recursive: true });
 		writeFileSync(
 			join(packageDir, "package.json"),
@@ -48,9 +48,9 @@ function writeFakeNpmScript(root: string, body: string): string {
 	return scriptPath;
 }
 
-test("seedBundledWorkspacePackages links bundled packages into the Feynman npm prefix", () => {
-	const appRoot = mkdtempSync(join(tmpdir(), "feynman-bundle-"));
-	const homeRoot = mkdtempSync(join(tmpdir(), "feynman-home-"));
+test("seedBundledWorkspacePackages links bundled packages into the Sherlock npm prefix", () => {
+	const appRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-bundle-"));
+	const homeRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-home-"));
 	const agentDir = resolve(homeRoot, "agent");
 	mkdirSync(agentDir, { recursive: true });
 
@@ -68,8 +68,8 @@ test("seedBundledWorkspacePackages links bundled packages into the Feynman npm p
 });
 
 test("seedBundledWorkspacePackages preserves existing installed packages", () => {
-	const appRoot = mkdtempSync(join(tmpdir(), "feynman-bundle-"));
-	const homeRoot = mkdtempSync(join(tmpdir(), "feynman-home-"));
+	const appRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-bundle-"));
+	const homeRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-home-"));
 	const agentDir = resolve(homeRoot, "agent");
 	const existingPackageDir = resolve(homeRoot, "npm-global", "lib", "node_modules", "pi-subagents");
 
@@ -86,10 +86,10 @@ test("seedBundledWorkspacePackages preserves existing installed packages", () =>
 });
 
 test("seedBundledWorkspacePackages treats copied bundled packages as satisfied", () => {
-	const appRoot = mkdtempSync(join(tmpdir(), "feynman-bundle-"));
-	const homeRoot = mkdtempSync(join(tmpdir(), "feynman-home-"));
+	const appRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-bundle-"));
+	const homeRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-home-"));
 	const agentDir = resolve(homeRoot, "agent");
-	const bundledPackageDir = resolve(appRoot, ".feynman", "npm", "node_modules", "pi-subagents");
+	const bundledPackageDir = resolve(appRoot, ".sherlock-ai", "npm", "node_modules", "pi-subagents");
 	const existingPackageDir = resolve(homeRoot, "npm-global", "lib", "node_modules", "pi-subagents");
 
 	mkdirSync(agentDir, { recursive: true });
@@ -103,8 +103,8 @@ test("seedBundledWorkspacePackages treats copied bundled packages as satisfied",
 });
 
 test("getMissingConfiguredPackages seeds bundled packages before reporting missing startup packages", () => {
-	const appRoot = mkdtempSync(join(tmpdir(), "feynman-bundle-"));
-	const homeRoot = mkdtempSync(join(tmpdir(), "feynman-home-"));
+	const appRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-bundle-"));
+	const homeRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-home-"));
 	const workingDir = resolve(homeRoot, "project");
 	const agentDir = resolve(homeRoot, "agent");
 	mkdirSync(workingDir, { recursive: true });
@@ -120,8 +120,8 @@ test("getMissingConfiguredPackages seeds bundled packages before reporting missi
 });
 
 test("seedBundledWorkspacePackages repairs broken existing bundled packages", () => {
-	const appRoot = mkdtempSync(join(tmpdir(), "feynman-bundle-"));
-	const homeRoot = mkdtempSync(join(tmpdir(), "feynman-home-"));
+	const appRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-bundle-"));
+	const homeRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-home-"));
 	const agentDir = resolve(homeRoot, "agent");
 	const existingPackageDir = resolve(homeRoot, "npm-global", "lib", "node_modules", "pi-markdown-preview");
 
@@ -148,8 +148,8 @@ test("seedBundledWorkspacePackages repairs broken existing bundled packages", ()
 });
 
 test("seedBundledWorkspacePackages prunes stale links from previous bundled runtimes", () => {
-	const appRoot = mkdtempSync(join(tmpdir(), "feynman-bundle-"));
-	const homeRoot = mkdtempSync(join(tmpdir(), "feynman-home-"));
+	const appRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-bundle-"));
+	const homeRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-home-"));
 	const agentDir = resolve(homeRoot, "agent");
 	const globalRoot = resolve(homeRoot, "npm-global", "lib", "node_modules");
 	const stalePackagePath = resolve(globalRoot, "@opentelemetry", "api");
@@ -161,7 +161,7 @@ test("seedBundledWorkspacePackages prunes stale links from previous bundled runt
 	mkdirSync(resolve(globalRoot, "@external"), { recursive: true });
 	mkdirSync(externalTarget, { recursive: true });
 	createBundledWorkspace(appRoot, ["pi-subagents"]);
-	symlinkSync(resolve(appRoot, ".feynman", "npm", "node_modules", "@opentelemetry", "api"), stalePackagePath, "dir");
+	symlinkSync(resolve(appRoot, ".sherlock-ai", "npm", "node_modules", "@opentelemetry", "api"), stalePackagePath, "dir");
 	symlinkSync(externalTarget, externalPackagePath, "dir");
 
 	const seeded = seedBundledWorkspacePackages(agentDir, appRoot, ["npm:pi-subagents"]);
@@ -173,7 +173,7 @@ test("seedBundledWorkspacePackages prunes stale links from previous bundled runt
 });
 
 test("installPackageSources filters noisy npm chatter but preserves meaningful output", async () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-package-ops-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-package-ops-"));
 	const workingDir = resolve(root, "project");
 	const agentDir = resolve(root, "agent");
 	mkdirSync(workingDir, { recursive: true });
@@ -224,7 +224,7 @@ test("installPackageSources filters noisy npm chatter but preserves meaningful o
 });
 
 test("installPackageSources skips native packages on unsupported Node majors before invoking npm", async () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-package-ops-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-package-ops-"));
 	const workingDir = resolve(root, "project");
 	const agentDir = resolve(root, "agent");
 	const markerPath = resolve(root, "npm-invoked.txt");
@@ -253,7 +253,7 @@ test("installPackageSources skips native packages on unsupported Node majors bef
 });
 
 test("installPackageSources disables inherited npm dry-run config for child installs", async () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-package-ops-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-package-ops-"));
 	const workingDir = resolve(root, "project");
 	const agentDir = resolve(root, "agent");
 	const markerPath = resolve(root, "install-env-ok.txt");
@@ -293,7 +293,7 @@ test("installPackageSources disables inherited npm dry-run config for child inst
 });
 
 test("updateConfiguredPackages batches multiple npm updates into a single install per scope", async () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-package-ops-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-package-ops-"));
 	const workingDir = resolve(root, "project");
 	const agentDir = resolve(root, "agent");
 	const logPath = resolve(root, "npm-invocations.jsonl");
@@ -344,7 +344,7 @@ test("updateConfiguredPackages batches multiple npm updates into a single instal
 });
 
 test("updateConfiguredPackages updates a specific npm package through the npm install path", async () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-package-ops-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-package-ops-"));
 	const workingDir = resolve(root, "project");
 	const agentDir = resolve(root, "agent");
 	const logPath = resolve(root, "npm-invocations.jsonl");
@@ -381,7 +381,7 @@ test("updateConfiguredPackages updates a specific npm package through the npm in
 });
 
 test("updateConfiguredPackages skips native package updates on unsupported Node majors", async () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-package-ops-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-package-ops-"));
 	const workingDir = resolve(root, "project");
 	const agentDir = resolve(root, "agent");
 	const logPath = resolve(root, "npm-invocations.jsonl");

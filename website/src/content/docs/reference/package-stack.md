@@ -1,15 +1,15 @@
 ---
 title: Package Stack
-description: Core and optional Pi packages bundled with Feynman.
+description: Core and optional Pi packages bundled with Sherlock.
 section: Reference
 order: 3
 ---
 
-Feynman is built on the Pi runtime and uses curated Pi packages for its capabilities. Packages are managed through `feynman packages` commands and configured in `~/.feynman/settings.json`.
+Sherlock is built on the Pi runtime and uses curated Pi packages for its capabilities. Packages are managed through `sherlock-ai packages` commands and configured in `~/.sherlock-ai/settings.json`.
 
 ## Core packages
 
-These are installed by default with every Feynman installation. They provide the foundation for research workflows while still letting Pi own the underlying runtime, RPC transport, provider model, and package loader.
+These are installed by default with every Sherlock installation. They provide the foundation for research workflows while still letting Pi own the underlying runtime, RPC transport, provider model, and package loader.
 
 | Package | Purpose |
 | --- | --- |
@@ -28,11 +28,11 @@ These are installed by default with every Feynman installation. They provide the
 | `@samfp/pi-memory` | Pi-managed preference and correction memory across sessions |
 | `@tmustier/pi-ralph-wiggum` | Long-running agent loops for iterative development. Powers `/autoresearch` |
 
-These packages are updated together when you run `feynman update`. You do not need to install them individually.
+These packages are updated together when you run `sherlock-ai update`. You do not need to install them individually.
 
 ## Optional packages
 
-Install on demand with `feynman packages install <preset>`. These extend Feynman with capabilities that not every user needs.
+Install on demand with `sherlock-ai packages install <preset>`. These extend Sherlock with capabilities that not every user needs.
 
 | Package | Preset | Purpose |
 | --- | --- | --- |
@@ -43,31 +43,31 @@ Install on demand with `feynman packages install <preset>`. These extend Feynman
 List all available packages and their install status:
 
 ```bash
-feynman packages list
+sherlock-ai packages list
 ```
 
 Install a specific optional preset:
 
 ```bash
-feynman packages install generative-ui
+sherlock-ai packages install generative-ui
 ```
 
-On Linux and Windows, `generative-ui` is hidden from `feynman packages list` and explicit installs print a platform message instead of attempting an npm install.
+On Linux and Windows, `generative-ui` is hidden from `sherlock-ai packages list` and explicit installs print a platform message instead of attempting an npm install.
 
 ## Updating packages
 
 Update all installed packages to their latest versions:
 
 ```bash
-feynman update
+sherlock-ai update
 ```
 
 Update a specific package:
 
 ```bash
-feynman update pi-subagents
+sherlock-ai update pi-subagents
 ```
 
-Running `feynman update` without arguments updates everything. Pass a specific package name to update just that one. Updates are safe and preserve your configuration.
+Running `sherlock-ai update` without arguments updates everything. Pass a specific package name to update just that one. Updates are safe and preserve your configuration.
 
-This command updates Pi packages inside Feynman's environment. To upgrade the standalone Feynman app itself, rerun the installer from the [Installation guide](/docs/getting-started/installation).
+This command updates Pi packages inside Sherlock's environment. To upgrade the standalone Sherlock app itself, rerun the installer from the [Installation guide](/docs/getting-started/installation).

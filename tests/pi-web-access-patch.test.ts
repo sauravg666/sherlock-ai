@@ -13,7 +13,7 @@ test("patchPiWebAccessSource rewrites legacy Pi web-search config paths", () => 
 
 	const patched = patchPiWebAccessSource("perplexity.ts", input);
 
-	assert.match(patched, /FEYNMAN_WEB_SEARCH_CONFIG/);
+	assert.match(patched, /SHERLOCK_AI_WEB_SEARCH_CONFIG/);
 	assert.match(patched, /PI_WEB_SEARCH_CONFIG/);
 });
 
@@ -126,7 +126,7 @@ test("patchPiWebAccessSource keeps Gemini Web config opt-in across current upstr
 
 	const patched = patchPiWebAccessSource("gemini-web-config.ts", input);
 
-	assert.match(patched, /process\.env\.FEYNMAN_WEB_SEARCH_CONFIG/);
+	assert.match(patched, /process\.env\.SHERLOCK_AI_WEB_SEARCH_CONFIG/);
 	assert.match(patched, /geminiBrowser\?: boolean/);
 	assert.match(patched, /allowBrowserAuth\?: boolean/);
 	assert.match(patched, /browserAuth\?: boolean/);

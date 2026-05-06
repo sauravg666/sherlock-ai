@@ -1,5 +1,5 @@
 const HELPER = `
-function normalizeFeynmanSearchToolArguments(args) {
+function normalizeSherlockSearchToolArguments(args) {
     if (!args || typeof args !== "object" || Array.isArray(args)) {
         return args;
     }
@@ -19,7 +19,7 @@ function normalizeFeynmanSearchToolArguments(args) {
     return normalized;
 }
 
-function normalizeFeynmanToolAlias(toolCall, tools) {
+function normalizeSherlockToolAlias(toolCall, tools) {
     const aliases = new Map([
         ["google:search", "web_search"],
         ["google_search", "web_search"],
@@ -33,13 +33,13 @@ function normalizeFeynmanToolAlias(toolCall, tools) {
     return {
         ...toolCall,
         name: targetName,
-        arguments: normalizeFeynmanSearchToolArguments(toolCall.arguments),
+        arguments: normalizeSherlockSearchToolArguments(toolCall.arguments),
     };
 }
 `;
 
 export function patchPiAgentCoreSource(source) {
-	if (source.includes("function normalizeFeynmanToolAlias(")) {
+	if (source.includes("function normalizeSherlockToolAlias(")) {
 		return source;
 	}
 
@@ -51,7 +51,7 @@ export function patchPiAgentCoreSource(source) {
 	let patched = source.replace(prepareStart, `${HELPER}\n${prepareStart}`);
 	patched = patched.replace(
 		"async function prepareToolCall(currentContext, assistantMessage, toolCall, config, signal) {\n    const tool = currentContext.tools?.find((t) => t.name === toolCall.name);",
-		"async function prepareToolCall(currentContext, assistantMessage, toolCall, config, signal) {\n    const effectiveToolCall = normalizeFeynmanToolAlias(toolCall, currentContext.tools);\n    const tool = currentContext.tools?.find((t) => t.name === effectiveToolCall.name);",
+		"async function prepareToolCall(currentContext, assistantMessage, toolCall, config, signal) {\n    const effectiveToolCall = normalizeSherlockToolAlias(toolCall, currentContext.tools);\n    const tool = currentContext.tools?.find((t) => t.name === effectiveToolCall.name);",
 	);
 	patched = patched.replace(
 		"        const preparedToolCall = prepareToolCallArguments(tool, toolCall);",

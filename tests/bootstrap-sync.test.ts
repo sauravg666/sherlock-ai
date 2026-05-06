@@ -7,53 +7,53 @@ import { join } from "node:path";
 import { syncBundledAssets } from "../src/bootstrap/sync.js";
 
 function createAppRoot(): string {
-	const appRoot = mkdtempSync(join(tmpdir(), "feynman-app-"));
-	mkdirSync(join(appRoot, ".feynman", "themes"), { recursive: true });
-	mkdirSync(join(appRoot, ".feynman", "agents"), { recursive: true });
-	writeFileSync(join(appRoot, ".feynman", "themes", "feynman.json"), '{"theme":"v1"}\n', "utf8");
-	writeFileSync(join(appRoot, ".feynman", "agents", "researcher.md"), "# v1\n", "utf8");
+	const appRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-app-"));
+	mkdirSync(join(appRoot, ".sherlock-ai", "themes"), { recursive: true });
+	mkdirSync(join(appRoot, ".sherlock-ai", "agents"), { recursive: true });
+	writeFileSync(join(appRoot, ".sherlock-ai", "themes", "sherlock-ai.json"), '{"theme":"v1"}\n', "utf8");
+	writeFileSync(join(appRoot, ".sherlock-ai", "agents", "researcher.md"), "# v1\n", "utf8");
 	return appRoot;
 }
 
 test("syncBundledAssets copies missing bundled files", () => {
 	const appRoot = createAppRoot();
-	const home = mkdtempSync(join(tmpdir(), "feynman-home-"));
-	process.env.FEYNMAN_HOME = home;
+	const home = mkdtempSync(join(tmpdir(), "sherlock-ai-home-"));
+	process.env.SHERLOCK_AI_HOME = home;
 	const agentDir = join(home, "agent");
 	mkdirSync(agentDir, { recursive: true });
 
 	const result = syncBundledAssets(appRoot, agentDir);
 
-	assert.deepEqual(result.copied.sort(), ["feynman.json", "researcher.md"]);
-	assert.equal(readFileSync(join(agentDir, "themes", "feynman.json"), "utf8"), '{"theme":"v1"}\n');
+	assert.deepEqual(result.copied.sort(), ["sherlock-ai.json", "researcher.md"]);
+	assert.equal(readFileSync(join(agentDir, "themes", "sherlock-ai.json"), "utf8"), '{"theme":"v1"}\n');
 	assert.equal(readFileSync(join(agentDir, "agents", "researcher.md"), "utf8"), "# v1\n");
 });
 
 test("syncBundledAssets preserves user-modified files and updates managed files", () => {
 	const appRoot = createAppRoot();
-	const home = mkdtempSync(join(tmpdir(), "feynman-home-"));
-	process.env.FEYNMAN_HOME = home;
+	const home = mkdtempSync(join(tmpdir(), "sherlock-ai-home-"));
+	process.env.SHERLOCK_AI_HOME = home;
 	const agentDir = join(home, "agent");
 	mkdirSync(agentDir, { recursive: true });
 
 	syncBundledAssets(appRoot, agentDir);
 
-	writeFileSync(join(appRoot, ".feynman", "themes", "feynman.json"), '{"theme":"v2"}\n', "utf8");
-	writeFileSync(join(appRoot, ".feynman", "agents", "researcher.md"), "# v2\n", "utf8");
+	writeFileSync(join(appRoot, ".sherlock-ai", "themes", "sherlock-ai.json"), '{"theme":"v2"}\n', "utf8");
+	writeFileSync(join(appRoot, ".sherlock-ai", "agents", "researcher.md"), "# v2\n", "utf8");
 	writeFileSync(join(agentDir, "agents", "researcher.md"), "# user-custom\n", "utf8");
 
 	const result = syncBundledAssets(appRoot, agentDir);
 
-	assert.deepEqual(result.updated, ["feynman.json"]);
+	assert.deepEqual(result.updated, ["sherlock-ai.json"]);
 	assert.deepEqual(result.skipped, ["researcher.md"]);
-	assert.equal(readFileSync(join(agentDir, "themes", "feynman.json"), "utf8"), '{"theme":"v2"}\n');
+	assert.equal(readFileSync(join(agentDir, "themes", "sherlock-ai.json"), "utf8"), '{"theme":"v2"}\n');
 	assert.equal(readFileSync(join(agentDir, "agents", "researcher.md"), "utf8"), "# user-custom\n");
 });
 
 test("syncBundledAssets removes deleted managed files but preserves user-modified stale files", () => {
 	const appRoot = createAppRoot();
-	const home = mkdtempSync(join(tmpdir(), "feynman-home-"));
-	process.env.FEYNMAN_HOME = home;
+	const home = mkdtempSync(join(tmpdir(), "sherlock-ai-home-"));
+	process.env.SHERLOCK_AI_HOME = home;
 	const agentDir = join(home, "agent");
 	mkdirSync(agentDir, { recursive: true });
 

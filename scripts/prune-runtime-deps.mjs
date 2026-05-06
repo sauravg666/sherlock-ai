@@ -128,4 +128,4 @@ pruneLiteparse(nodeModulesDir);
 prunePiCodingAgent(nodeModulesDir);
 pruneMermaid(nodeModulesDir);
 
-console.log(`[feynman] pruned runtime deps in ${basename(root)}`);
+console.log(`[sherlock-ai] pruned runtime deps in ${basename(root)}`);

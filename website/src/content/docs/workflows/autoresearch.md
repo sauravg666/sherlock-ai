@@ -18,7 +18,7 @@ From the REPL:
 From the CLI:
 
 ```bash
-feynman autoresearch "Optimize prompt engineering strategies for math reasoning on GSM8K"
+sherlock-ai autoresearch "Optimize prompt engineering strategies for math reasoning on GSM8K"
 ```
 
 Autoresearch runs as a long-lived background process. You can monitor its progress, pause it, or redirect its focus at any time.
@@ -42,7 +42,7 @@ Check active autoresearch jobs:
 /jobs
 ```
 
-Autoresearch runs in the background, so you can continue using Feynman for other tasks while it works. The `/jobs` command shows the current status, iteration count, and best result so far. You can interrupt the loop at any time to provide guidance or redirect the search.
+Autoresearch runs in the background, so you can continue using Sherlock for other tasks while it works. The `/jobs` command shows the current status, iteration count, and best result so far. You can interrupt the loop at any time to provide guidance or redirect the search.
 
 ## Output format
 

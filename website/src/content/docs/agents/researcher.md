@@ -5,7 +5,7 @@ section: Agents
 order: 1
 ---
 
-The researcher is the primary information-gathering agent in Feynman. It searches academic databases and the web, reads papers and articles, extracts key findings, and organizes source material for other agents to synthesize. Most workflows start with the researcher.
+The researcher is the primary information-gathering agent in Sherlock. It searches academic databases and the web, reads papers and articles, extracts key findings, and organizes source material for other agents to synthesize. Most workflows start with the researcher.
 
 ## What it does
 

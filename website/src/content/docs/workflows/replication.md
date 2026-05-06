@@ -22,7 +22,7 @@ From the REPL:
 From the CLI:
 
 ```bash
-feynman replicate "paper or claim"
+sherlock-ai replicate "paper or claim"
 ```
 
 You can point the workflow at a full paper for a comprehensive replication plan, or at a specific claim for a focused reproduction.
@@ -47,4 +47,4 @@ The replication plan includes:
 
 ## Iterative execution
 
-After generating the plan, you can execute the replication interactively. Feynman walks you through each step, helps you write the code, monitors training runs, and compares intermediate results against the paper's reported values. When results diverge, it helps diagnose whether the cause is an implementation difference, a hyperparameter mismatch, or a genuine replication failure.
+After generating the plan, you can execute the replication interactively. Sherlock walks you through each step, helps you write the code, monitors training runs, and compares intermediate results against the paper's reported values. When results diverge, it helps diagnose whether the cause is an implementation difference, a hyperparameter mismatch, or a genuine replication failure.

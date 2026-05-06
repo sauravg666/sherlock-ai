@@ -33,15 +33,15 @@ export function getUnsupportedNodeVersionLines(version = process.versions.node):
 	const parsed = parseNodeVersion(version);
 	const rangeText = `Node.js ${MIN_NODE_VERSION} through ${MAX_NODE_MAJOR}.x`;
 	return [
-		`feynman supports ${rangeText} (detected ${version}).`,
+		`sherlock-ai supports ${rangeText} (detected ${version}).`,
 		parsed.major > MAX_NODE_MAJOR
 			? "This newer Node release is not supported yet because native Pi packages may fail to build."
 			: isWindows
 				? "Install a supported Node.js release from https://nodejs.org, or use the standalone installer:"
 				: `Switch to a supported Node release with \`nvm install ${PREFERRED_NODE_MAJOR} && nvm use ${PREFERRED_NODE_MAJOR}\`, or use the standalone installer:`,
 		isWindows
-			? "irm https://feynman.is/install.ps1 | iex"
-			: "curl -fsSL https://feynman.is/install | bash",
+			? "irm https://sherlock-ai.dev/install.ps1 | iex"
+			: "curl -fsSL https://sherlock-ai.dev/install | bash",
 	];
 }
 

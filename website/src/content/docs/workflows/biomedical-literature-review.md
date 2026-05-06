@@ -1,6 +1,6 @@
 ---
 title: Biomedical Literature Review
-description: Use Feynman for research-only biomedical literature reviews with evidence grading and privacy boundaries.
+description: Use Sherlock for research-only biomedical literature reviews with evidence grading and privacy boundaries.
 section: Workflows
 order: 3
 ---
@@ -18,7 +18,7 @@ From the REPL:
 From the CLI:
 
 ```bash
-feynman lit "PICO: adults with type 2 diabetes; intervention continuous glucose monitoring; comparator standard self-monitoring; outcomes HbA1c and hypoglycemia"
+sherlock-ai lit "PICO: adults with type 2 diabetes; intervention continuous glucose monitoring; comparator standard self-monitoring; outcomes HbA1c and hypoglycemia"
 ```
 
 ## Frame the question
@@ -35,7 +35,7 @@ For non-intervention questions, state the study type directly. Examples: prognos
 
 ## Source priority
 
-Ask Feynman to separate evidence by study design instead of treating every source as equal. A typical biomedical review should distinguish:
+Ask Sherlock to separate evidence by study design instead of treating every source as equal. A typical biomedical review should distinguish:
 
 - clinical practice guidelines and consensus statements
 - systematic reviews and meta-analyses
@@ -49,7 +49,7 @@ Ask Feynman to separate evidence by study design instead of treating every sourc
 
 When evidence conflicts, keep the disagreement visible. Do not collapse guideline statements, trials, observational studies, and mechanistic papers into one undifferentiated conclusion.
 
-## What to ask Feynman to report
+## What to ask Sherlock to report
 
 For biomedical topics, include these instructions in the prompt when they matter:
 
@@ -64,9 +64,9 @@ For biomedical topics, include these instructions in the prompt when they matter
 
 ## Privacy and safety boundaries
 
-Do not paste protected health information, identifiable patient details, imaging identifiers, hospital records, insurance records, or private clinical notes into a Feynman workflow. Use de-identified, aggregate, or fictionalized research questions instead.
+Do not paste protected health information, identifiable patient details, imaging identifiers, hospital records, insurance records, or private clinical notes into a Sherlock workflow. Use de-identified, aggregate, or fictionalized research questions instead.
 
-Feynman outputs should be treated as research drafts. A biomedical review can help organize the literature, but it does not replace a systematic review protocol, clinical guideline process, institutional review, statistical analysis plan, or licensed clinical judgment.
+Sherlock outputs should be treated as research drafts. A biomedical review can help organize the literature, but it does not replace a systematic review protocol, clinical guideline process, institutional review, statistical analysis plan, or licensed clinical judgment.
 
 Avoid prompts that ask for direct patient advice. If a topic touches diagnosis, treatment, screening, or safety, phrase the task as literature synthesis:
 
@@ -98,4 +98,4 @@ A useful biomedical literature review should include:
 - conflicts, uncertainty, and generalizability limits
 - a clear statement that the output is research synthesis, not medical advice
 
-If Feynman cannot access a full text, trial registry, guideline, supplement, dataset, or source URL, the review should mark that check as blocked instead of inferring missing details.
+If Sherlock cannot access a full text, trial registry, guideline, supplement, dataset, or source URL, the review should mark that check as blocked instead of inferring missing details.

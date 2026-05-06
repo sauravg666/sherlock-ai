@@ -18,16 +18,16 @@ From the REPL:
 From the CLI:
 
 ```bash
-feynman watch "New developments in state space models for sequence modeling"
+sherlock-ai watch "New developments in state space models for sequence modeling"
 ```
 
-After setting up a watch, Feynman periodically runs searches on the topic and alerts you when it finds new relevant material.
+After setting up a watch, Sherlock periodically runs searches on the topic and alerts you when it finds new relevant material.
 
 ## How it works
 
-The watch workflow is built on `pi-schedule-prompt`, which manages scheduled and recurring tasks. When you create a watch, Feynman stores the topic and search parameters, then runs a lightweight search at regular intervals (default: daily).
+The watch workflow is built on `pi-schedule-prompt`, which manages scheduled and recurring tasks. When you create a watch, Sherlock stores the topic and search parameters, then runs a lightweight search at regular intervals (default: daily).
 
-Each check searches AlphaXiv for new papers and the web for new articles matching your topic. Results are compared against what was found in previous checks to surface only genuinely new material. When new items are found, Feynman produces a brief summary of each and stores it in your session history.
+Each check searches AlphaXiv for new papers and the web for new articles matching your topic. Results are compared against what was found in previous checks to surface only genuinely new material. When new items are found, Sherlock produces a brief summary of each and stores it in your session history.
 
 The watch is smart about relevance. It does not just keyword-match -- it uses the same researcher agent that powers deep research to evaluate whether new papers are genuinely relevant to your topic or just superficially related. This keeps the signal-to-noise ratio high even for broad topics.
 

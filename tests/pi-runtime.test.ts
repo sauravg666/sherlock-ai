@@ -2,14 +2,14 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { pathToFileURL } from "node:url";
 
-import { applyFeynmanPackageManagerEnv, buildPiArgs, buildPiEnv, resolvePiPaths, toNodeImportSpecifier } from "../src/pi/runtime.js";
+import { applySherlockPackageManagerEnv, buildPiArgs, buildPiEnv, resolvePiPaths, toNodeImportSpecifier } from "../src/pi/runtime.js";
 
 test("buildPiArgs includes configured runtime paths and prompt", () => {
 	const args = buildPiArgs({
-		appRoot: "/repo/feynman",
+		appRoot: "/repo/sherlock-ai",
 		workingDir: "/workspace",
 		sessionDir: "/sessions",
-		feynmanAgentDir: "/home/.feynman/agent",
+		sherlockAgentDir: "/home/.sherlock-ai/agent",
 		mode: "rpc",
 		initialPrompt: "hello",
 		explicitModelSpec: "openai:gpt-5.4",
@@ -20,9 +20,9 @@ test("buildPiArgs includes configured runtime paths and prompt", () => {
 		"--session-dir",
 		"/sessions",
 		"--extension",
-		"/repo/feynman/extensions/research-tools.ts",
+		"/repo/sherlock-ai/extensions/research-tools.ts",
 		"--prompt-template",
-		"/repo/feynman/prompts",
+		"/repo/sherlock-ai/prompts",
 		"--mode",
 		"rpc",
 		"--model",
@@ -35,10 +35,10 @@ test("buildPiArgs includes configured runtime paths and prompt", () => {
 
 test("buildPiArgs omits thinking arg when launch thinking is not explicit", () => {
 	const args = buildPiArgs({
-		appRoot: "/repo/feynman",
+		appRoot: "/repo/sherlock-ai",
 		workingDir: "/workspace",
 		sessionDir: "/sessions",
-		feynmanAgentDir: "/home/.feynman/agent",
+		sherlockAgentDir: "/home/.sherlock-ai/agent",
 		mode: "rpc",
 		initialPrompt: "hello",
 	});
@@ -46,7 +46,7 @@ test("buildPiArgs omits thinking arg when launch thinking is not explicit", () =
 	assert.equal(args.includes("--thinking"), false);
 });
 
-test("buildPiEnv wires Feynman paths into the Pi environment", () => {
+test("buildPiEnv wires Sherlock paths into the Pi environment", () => {
 	const previousUppercasePrefix = process.env.NPM_CONFIG_PREFIX;
 	const previousLowercasePrefix = process.env.npm_config_prefix;
 	const previousOtelServiceName = process.env.OTEL_SERVICE_NAME;
@@ -61,28 +61,28 @@ test("buildPiEnv wires Feynman paths into the Pi environment", () => {
 	delete process.env.PI_OTEL_SERVICE_VERSION;
 
 	const env = buildPiEnv({
-		appRoot: "/repo/feynman",
+		appRoot: "/repo/sherlock-ai",
 		workingDir: "/workspace",
 		sessionDir: "/sessions",
-		feynmanAgentDir: "/home/.feynman/agent",
-		feynmanVersion: "0.1.5",
+		sherlockAgentDir: "/home/.sherlock-ai/agent",
+		sherlockVersion: "0.1.5",
 	});
 
 	try {
-		assert.equal(env.FEYNMAN_SESSION_DIR, "/sessions");
-		assert.equal(env.FEYNMAN_BIN_PATH, "/repo/feynman/bin/feynman.js");
-		assert.equal(env.FEYNMAN_PI_CLI_PATH, "/repo/feynman/node_modules/@mariozechner/pi-coding-agent/dist/cli.js");
-		assert.equal(env.FEYNMAN_MEMORY_DIR, "/home/.feynman/memory");
-		assert.equal(env.FEYNMAN_NPM_PREFIX, "/home/.feynman/npm-global");
-		assert.equal(env.NPM_CONFIG_PREFIX, "/home/.feynman/npm-global");
-		assert.equal(env.npm_config_prefix, "/home/.feynman/npm-global");
-		assert.equal(env.FEYNMAN_CODING_AGENT_DIR, "/home/.feynman/agent");
-		assert.equal(env.PI_CODING_AGENT_DIR, "/home/.feynman/agent");
+		assert.equal(env.SHERLOCK_AI_SESSION_DIR, "/sessions");
+		assert.equal(env.SHERLOCK_AI_BIN_PATH, "/repo/sherlock-ai/bin/sherlock-ai.js");
+		assert.equal(env.SHERLOCK_AI_PI_CLI_PATH, "/repo/sherlock-ai/node_modules/@mariozechner/pi-coding-agent/dist/cli.js");
+		assert.equal(env.SHERLOCK_AI_MEMORY_DIR, "/home/.sherlock-ai/memory");
+		assert.equal(env.SHERLOCK_AI_NPM_PREFIX, "/home/.sherlock-ai/npm-global");
+		assert.equal(env.NPM_CONFIG_PREFIX, "/home/.sherlock-ai/npm-global");
+		assert.equal(env.npm_config_prefix, "/home/.sherlock-ai/npm-global");
+		assert.equal(env.SHERLOCK_AI_CODING_AGENT_DIR, "/home/.sherlock-ai/agent");
+		assert.equal(env.PI_CODING_AGENT_DIR, "/home/.sherlock-ai/agent");
 		assert.equal(env.OTEL_SERVICE_NAME, undefined);
 		assert.equal(env.OTEL_SERVICE_VERSION, undefined);
 		assert.ok(
 			env.PATH?.startsWith(
-				"/repo/feynman/node_modules/.bin:/repo/feynman/.feynman/npm/node_modules/.bin:/home/.feynman/npm-global/bin:",
+				"/repo/sherlock-ai/node_modules/.bin:/repo/sherlock-ai/.sherlock-ai/npm/node_modules/.bin:/home/.sherlock-ai/npm-global/bin:",
 			),
 		);
 	} finally {
@@ -120,13 +120,13 @@ test("buildPiEnv wires Feynman paths into the Pi environment", () => {
 });
 
 test("buildPiEnv uses pre-resolved executable paths when provided", () => {
-	const paths = resolvePiPaths("/repo/feynman");
+	const paths = resolvePiPaths("/repo/sherlock-ai");
 	const env = buildPiEnv(
 		{
-			appRoot: "/repo/feynman",
+			appRoot: "/repo/sherlock-ai",
 			workingDir: "/workspace",
 			sessionDir: "/sessions",
-			feynmanAgentDir: "/home/.feynman/agent",
+			sherlockAgentDir: "/home/.sherlock-ai/agent",
 		},
 		paths,
 		{
@@ -141,23 +141,23 @@ test("buildPiEnv uses pre-resolved executable paths when provided", () => {
 	assert.equal(env.PUPPETEER_EXECUTABLE_PATH, "/opt/test/bin/chrome");
 });
 
-test("applyFeynmanPackageManagerEnv pins npm globals to the Feynman prefix", () => {
-	const previousFeynmanPrefix = process.env.FEYNMAN_NPM_PREFIX;
+test("applySherlockPackageManagerEnv pins npm globals to the Sherlock prefix", () => {
+	const previousSherlockPrefix = process.env.SHERLOCK_AI_NPM_PREFIX;
 	const previousUppercasePrefix = process.env.NPM_CONFIG_PREFIX;
 	const previousLowercasePrefix = process.env.npm_config_prefix;
 
 	try {
-		const prefix = applyFeynmanPackageManagerEnv("/home/.feynman/agent");
+		const prefix = applySherlockPackageManagerEnv("/home/.sherlock-ai/agent");
 
-		assert.equal(prefix, "/home/.feynman/npm-global");
-		assert.equal(process.env.FEYNMAN_NPM_PREFIX, "/home/.feynman/npm-global");
-		assert.equal(process.env.NPM_CONFIG_PREFIX, "/home/.feynman/npm-global");
-		assert.equal(process.env.npm_config_prefix, "/home/.feynman/npm-global");
+		assert.equal(prefix, "/home/.sherlock-ai/npm-global");
+		assert.equal(process.env.SHERLOCK_AI_NPM_PREFIX, "/home/.sherlock-ai/npm-global");
+		assert.equal(process.env.NPM_CONFIG_PREFIX, "/home/.sherlock-ai/npm-global");
+		assert.equal(process.env.npm_config_prefix, "/home/.sherlock-ai/npm-global");
 	} finally {
-		if (previousFeynmanPrefix === undefined) {
-			delete process.env.FEYNMAN_NPM_PREFIX;
+		if (previousSherlockPrefix === undefined) {
+			delete process.env.SHERLOCK_AI_NPM_PREFIX;
 		} else {
-			process.env.FEYNMAN_NPM_PREFIX = previousFeynmanPrefix;
+			process.env.SHERLOCK_AI_NPM_PREFIX = previousSherlockPrefix;
 		}
 		if (previousUppercasePrefix === undefined) {
 			delete process.env.NPM_CONFIG_PREFIX;
@@ -173,15 +173,15 @@ test("applyFeynmanPackageManagerEnv pins npm globals to the Feynman prefix", () 
 });
 
 test("resolvePiPaths includes the Promise.withResolvers polyfill path", () => {
-	const paths = resolvePiPaths("/repo/feynman");
+	const paths = resolvePiPaths("/repo/sherlock-ai");
 
-	assert.equal(paths.promisePolyfillPath, "/repo/feynman/dist/system/promise-polyfill.js");
+	assert.equal(paths.promisePolyfillPath, "/repo/sherlock-ai/dist/system/promise-polyfill.js");
 });
 
 test("toNodeImportSpecifier converts absolute preload paths to file URLs", () => {
 	assert.equal(
-		toNodeImportSpecifier("/repo/feynman/dist/system/promise-polyfill.js"),
-		pathToFileURL("/repo/feynman/dist/system/promise-polyfill.js").href,
+		toNodeImportSpecifier("/repo/sherlock-ai/dist/system/promise-polyfill.js"),
+		pathToFileURL("/repo/sherlock-ai/dist/system/promise-polyfill.js").href,
 	);
 	assert.equal(toNodeImportSpecifier("tsx"), "tsx");
 });

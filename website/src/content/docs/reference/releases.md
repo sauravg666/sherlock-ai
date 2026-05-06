@@ -1,17 +1,17 @@
 ---
 title: Release Notes
-description: User-facing changelog for Feynman releases.
+description: User-facing changelog for Sherlock releases.
 section: Reference
 order: 4
 ---
 
-This page summarizes what changed in recent Feynman releases. GitHub releases use the same version-specific notes from the repository `RELEASES.md` file.
+This page summarizes what changed in recent Sherlock releases. GitHub releases use the same version-specific notes from the repository `RELEASES.md` file.
 
 ## v0.2.42 - 2026-05-06
 
 ### Fixes
 
-- Fixed runtime RPC startup in projects with `.feynman/settings.json` package entries by patching Pi's project npm install path to use peer-dependency-compatible installs.
+- Fixed runtime RPC startup in projects with `.sherlock-ai/settings.json` package entries by patching Pi's project npm install path to use peer-dependency-compatible installs.
 - This prevents project-scoped package sync from failing on packages such as `@aliou/pi-processes` before the RPC session can start.
 
 ### Validation
@@ -42,11 +42,11 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 
 ### Fixes
 
-- Fixed local-model web-search failures where a model calls non-existent search aliases such as `google:search`; Feynman now maps those aliases to Pi's real `web_search` tool when it is available.
+- Fixed local-model web-search failures where a model calls non-existent search aliases such as `google:search`; Sherlock now maps those aliases to Pi's real `web_search` tool when it is available.
 - Granted the bundled researcher and verifier agents access to Pi web-access tools (`web_search`, `fetch_content`, and `get_search_content`) so their prompts and allowed tools match.
-- Made `feynman doctor` and `feynman search status` explicitly show when `web-search.json` has not been created and how to initialize it.
+- Made `sherlock-ai doctor` and `sherlock-ai search status` explicitly show when `web-search.json` has not been created and how to initialize it.
 - Stopped treating expired OAuth credentials as authenticated model availability, so `doctor`, `model list`, and onboarding guide users to re-login instead of failing later in chat.
-- Added a package-workspace setup lock so concurrent Feynman invocations do not race while restoring `.feynman/npm`.
+- Added a package-workspace setup lock so concurrent Sherlock invocations do not race while restoring `.sherlock-ai/npm`.
 
 ### Validation
 
@@ -57,12 +57,12 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 
 ### Fixes
 
-- Fixed TUI-selected thinking/reasoning effort persistence. Feynman no longer passes an implicit `--thinking medium` on every launch, so thinking levels saved by Pi after `Shift+Tab` survive restarts.
-- Explicit `--thinking <level>` and `FEYNMAN_THINKING=<level>` still override the saved default for that launch.
+- Fixed TUI-selected thinking/reasoning effort persistence. Sherlock no longer passes an implicit `--thinking medium` on every launch, so thinking levels saved by Pi after `Shift+Tab` survive restarts.
+- Explicit `--thinking <level>` and `SHERLOCK_AI_THINKING=<level>` still override the saved default for that launch.
 
 ### Validation
 
-- Added regression coverage that Feynman only passes a launch thinking override when it was explicitly configured.
+- Added regression coverage that Sherlock only passes a launch thinking override when it was explicitly configured.
 - Full local tests passed: 126/126.
 - Typecheck and build passed.
 
@@ -70,17 +70,17 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 
 ### Fixes
 
-- Fixed `feynman update memory` and `feynman update session-search` so friendly core-package aliases resolve to the correct npm package sources and use Feynman's npm install path with peer-dependency compatibility flags.
-- Fixed `feynman summarize ... --window-size ...` and related summarize tuning flags when the flags appear after the source positional.
-- Fixed `feynman setup preview` so it actually runs the preview dependency check, matching the legacy `--setup-preview` alias.
+- Fixed `sherlock-ai update memory` and `sherlock-ai update session-search` so friendly core-package aliases resolve to the correct npm package sources and use Sherlock's npm install path with peer-dependency compatibility flags.
+- Fixed `sherlock-ai summarize ... --window-size ...` and related summarize tuning flags when the flags appear after the source positional.
+- Fixed `sherlock-ai setup preview` so it actually runs the preview dependency check, matching the legacy `--setup-preview` alias.
 - Made optional `generative-ui` install/update failures degrade cleanly on macOS toolchains where upstream `glimpseui` cannot compile, without dumping thousands of Swift compiler lines.
-- Reduced deepresearch TUI redraw churn by freezing the Feynman header's Last Activity snapshot during live streaming work instead of recomputing it every render.
+- Reduced deepresearch TUI redraw churn by freezing the Sherlock header's Last Activity snapshot during live streaming work instead of recomputing it every render.
 - Fixed bundled skills that referenced prompt templates through broken installed relative paths.
 - Fixed the embedded Pi patcher so repeated runtime preparation does not duplicate the TUI stdin error handler.
 
 ### Documentation
 
-- Documented `feynman setup preview`.
+- Documented `sherlock-ai setup preview`.
 - Documented the existing `Shift+Tab` thinking-level hotkey and `/hotkeys` discovery path.
 
 ### Validation
@@ -94,7 +94,7 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 
 ### Fixes
 
-- Hardened `/deepresearch` reviewer/audit fix handling so Feynman may only claim a patch landed after the edit/write tool succeeds and an explicit on-disk check proves the old unsupported content is gone and the corrected content exists.
+- Hardened `/deepresearch` reviewer/audit fix handling so Sherlock may only claim a patch landed after the edit/write tool succeeds and an explicit on-disk check proves the old unsupported content is gone and the corrected content exists.
 - Added provenance requirements for failed edit recovery so verification notes cannot mark an issue fixed before the final candidate actually reflects the fix.
 - Corrected MiniMax model preference casing to match Pi's exposed model IDs.
 
@@ -118,7 +118,7 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 
 - Hardened `/review` so it writes a durable plan, evidence notes, and `outputs/<slug>-review.md` instead of stopping after a planning/narration response.
 - Added blocked-review fallback behavior for PDFs or external sources that cannot be parsed, so failed extraction still produces an explicit review artifact with `Verification: BLOCKED`.
-- Fixed subagent child-process spawning under Feynman's Pi wrapper so writer/reviewer subagents no longer treat `--mode` as a module path.
+- Fixed subagent child-process spawning under Sherlock's Pi wrapper so writer/reviewer subagents no longer treat `--mode` as a module path.
 - Made optional package presets platform-aware so Linux users do not see or attempt to install the macOS-only `generative-ui` package.
 - Added the Release Notes entry to the website docs sidebar.
 
@@ -130,7 +130,7 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 ### Validation
 
 - Added regression coverage for the `/review` durable-artifact contract.
-- Added regression coverage for platform-aware optional presets and Feynman-aware subagent spawning.
+- Added regression coverage for platform-aware optional presets and Sherlock-aware subagent spawning.
 - Real installed-global review, package-list/install, subagent, and extension-load checks were run before release.
 
 ## v0.2.35 - 2026-04-18
@@ -138,14 +138,14 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 ### Fixes
 
 - Restored the `/deepresearch` confirmation gate: the workflow now writes `outputs/.plans/<slug>.md`, summarizes the plan, and waits for explicit user approval before searching, drafting, citing, or delivering final artifacts.
-- Changed top-level workflow invocation so `feynman deepresearch ...` behaves like the REPL workflow in a real terminal instead of forcing one-shot execution.
-- Added a Feynman wrapper around Pi's CLI entrypoint so completed print-mode runs exit cleanly after Pi finishes.
+- Changed top-level workflow invocation so `sherlock-ai deepresearch ...` behaves like the REPL workflow in a real terminal instead of forcing one-shot execution.
+- Added a Sherlock wrapper around Pi's CLI entrypoint so completed print-mode runs exit cleanly after Pi finishes.
 - Tightened direct-mode `/deepresearch` artifact paths so research notes and verification files are written under `outputs/.drafts/`.
 
 ### Features
 
 - Added section-focused `alpha_get_paper` extraction with `section` / `sections` filters for abstract, introduction, methodology, experiments, results, discussion, limitations, and conclusion.
-- Added configurable `/summarize` context-window controls via flags and `FEYNMAN_SUMMARIZE_*` environment variables.
+- Added configurable `/summarize` context-window controls via flags and `SHERLOCK_AI_SUMMARIZE_*` environment variables.
 
 ### Documentation
 
@@ -196,7 +196,7 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 
 ### Fixes
 
-- Fixed Feynman runtime auth environment propagation so launched Pi sessions can see the expected model provider credentials.
+- Fixed Sherlock runtime auth environment propagation so launched Pi sessions can see the expected model provider credentials.
 - Revalidated setup and runtime startup paths after the auth fix.
 
 ## v0.2.30 - 2026-04-17

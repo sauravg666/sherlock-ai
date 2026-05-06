@@ -19,7 +19,7 @@ test("normalizeServiceTier accepts supported values only", () => {
 });
 
 test("setConfiguredServiceTier persists and clears settings.json values", () => {
-	const dir = mkdtempSync(join(tmpdir(), "feynman-service-tier-"));
+	const dir = mkdtempSync(join(tmpdir(), "sherlock-ai-service-tier-"));
 	const settingsPath = join(dir, "settings.json");
 
 	setConfiguredServiceTier(settingsPath, "priority");

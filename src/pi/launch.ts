@@ -42,7 +42,7 @@ export async function launchPiChat(options: PiRuntimeOptions): Promise<void> {
 	const useBuiltWrapper = existsSync(piCliWrapperPath);
 	const useDevWrapper = !useBuiltWrapper && existsSync(piCliWrapperSourcePath) && existsSync(tsxLoaderPath);
 	if (!useBuiltWrapper && !useDevWrapper) {
-		throw new Error(`Feynman Pi CLI wrapper not found: ${piCliWrapperPath}`);
+		throw new Error(`Sherlock Pi CLI wrapper not found: ${piCliWrapperPath}`);
 	}
 
 	if (process.stdout.isTTY && options.mode !== "rpc") {
@@ -69,7 +69,7 @@ export async function launchPiChat(options: PiRuntimeOptions): Promise<void> {
 		child.on("error", reject);
 		child.on("exit", (code, signal) => {
 			if (signal) {
-				console.error(`feynman terminated because the Pi child exited with ${signal}.`);
+				console.error(`sherlock-ai terminated because the Pi child exited with ${signal}.`);
 				process.exitCode = exitCodeFromSignal(signal);
 				resolvePromise();
 				return;

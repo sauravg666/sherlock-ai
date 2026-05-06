@@ -10,7 +10,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   integrations: [react()],
-  site: 'https://feynman.is',
+  site: 'https://sherlock-ai.dev',
   markdown: {
     shikiConfig: {
       themes: {

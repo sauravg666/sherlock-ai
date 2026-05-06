@@ -22,7 +22,7 @@ From the REPL:
 From the CLI:
 
 ```bash
-feynman draft "A survey of retrieval-augmented generation techniques"
+sherlock-ai draft "A survey of retrieval-augmented generation techniques"
 ```
 
 When used with `--from-session`, the writer draws from the current session's research findings, making it a natural follow-up to a deep research or literature review workflow.
@@ -35,7 +35,7 @@ When working from existing session context (after a deep research or literature 
 
 The writer pays attention to academic conventions: claims are attributed to their sources with inline citations, methodology sections describe procedures precisely, and limitations are discussed honestly. The draft includes placeholder sections for any content the writer cannot generate from available sources, clearly marking what needs human input.
 
-Drafts follow Feynman's system-wide provenance rules: unsupported results, figures, images, tables, or benchmark data should become clearly labeled gaps or TODOs, not plausible-looking claims.
+Drafts follow Sherlock's system-wide provenance rules: unsupported results, figures, images, tables, or benchmark data should become clearly labeled gaps or TODOs, not plausible-looking claims.
 
 ## Output format
 
@@ -50,4 +50,4 @@ The draft follows standard academic structure:
 
 ## Preview and iteration
 
-After generating the draft, use `/preview` to render it as HTML or PDF with proper formatting, math rendering, and typography. You can iterate on the draft by asking Feynman to revise specific sections, add more detail, or restructure the argument.
+After generating the draft, use `/preview` to render it as HTML or PDF with proper formatting, math rendering, and typography. You can iterate on the draft by asking Sherlock to revise specific sections, add more detail, or restructure the argument.

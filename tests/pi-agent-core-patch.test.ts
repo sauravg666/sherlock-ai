@@ -44,9 +44,9 @@ async function prepareToolCall(currentContext, assistantMessage, toolCall, confi
 test("patchPiAgentCoreSource maps google search aliases to web_search", () => {
 	const patched = patchPiAgentCoreSource(SOURCE);
 
-	assert.match(patched, /function normalizeFeynmanToolAlias/);
+	assert.match(patched, /function normalizeSherlockToolAlias/);
 	assert.match(patched, /\["google:search", "web_search"\]/);
-	assert.match(patched, /const effectiveToolCall = normalizeFeynmanToolAlias\(toolCall, currentContext\.tools\)/);
+	assert.match(patched, /const effectiveToolCall = normalizeSherlockToolAlias\(toolCall, currentContext\.tools\)/);
 	assert.match(patched, /t\.name === effectiveToolCall\.name/);
 	assert.match(patched, /prepareToolCallArguments\(tool, effectiveToolCall\)/);
 	assert.match(patched, /toolCall: preparedToolCall/);

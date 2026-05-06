@@ -26,20 +26,20 @@ test("ensureSupportedNodeVersion throws a guided upgrade message", () => {
 			error instanceof Error &&
 			error.message.includes(`Node.js ${MIN_NODE_VERSION}`) &&
 			error.message.includes("nvm install 22 && nvm use 22") &&
-			error.message.includes("https://feynman.is/install"),
+			error.message.includes("https://sherlock-ai.dev/install"),
 	);
 });
 
 test("unsupported version guidance reports the detected version", () => {
 	const lines = getUnsupportedNodeVersionLines("18.17.0");
 
-	assert.equal(lines[0], `feynman supports Node.js ${MIN_NODE_VERSION} through ${MAX_NODE_MAJOR}.x (detected 18.17.0).`);
-	assert.ok(lines.some((line) => line.includes("curl -fsSL https://feynman.is/install | bash")));
+	assert.equal(lines[0], `sherlock-ai supports Node.js ${MIN_NODE_VERSION} through ${MAX_NODE_MAJOR}.x (detected 18.17.0).`);
+	assert.ok(lines.some((line) => line.includes("curl -fsSL https://sherlock-ai.dev/install | bash")));
 });
 
 test("unsupported version guidance explains upper-bound failures", () => {
 	const lines = getUnsupportedNodeVersionLines("25.1.0");
 
-	assert.equal(lines[0], `feynman supports Node.js ${MIN_NODE_VERSION} through ${MAX_NODE_MAJOR}.x (detected 25.1.0).`);
+	assert.equal(lines[0], `sherlock-ai supports Node.js ${MIN_NODE_VERSION} through ${MAX_NODE_MAJOR}.x (detected 25.1.0).`);
 	assert.ok(lines.some((line) => line.includes("native Pi packages may fail to build")));
 });

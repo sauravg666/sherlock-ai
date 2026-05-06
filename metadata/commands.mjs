@@ -37,8 +37,8 @@ export function readPromptSpecs(appRoot) {
 export const extensionCommandSpecs = [
 	{ name: "capabilities", args: "", section: "Project & Session", description: "Show installed packages, discovery entrypoints, and runtime capability counts.", publicDocs: true },
 	{ name: "commands", args: "", section: "Project & Session", description: "Browse all available slash commands, including built-in and package commands.", publicDocs: true },
-	{ name: "help", args: "", section: "Project & Session", description: "Show grouped Feynman commands and prefill the editor with a selected command.", publicDocs: true },
-	{ name: "feynman-model", args: "", section: "Project & Session", description: "Open Feynman model menu (main + per-subagent overrides).", publicDocs: true },
+	{ name: "help", args: "", section: "Project & Session", description: "Show grouped Sherlock commands and prefill the editor with a selected command.", publicDocs: true },
+	{ name: "sherlock-ai-model", args: "", section: "Project & Session", description: "Open Sherlock model menu (main + per-subagent overrides).", publicDocs: true },
 	{ name: "init", args: "", section: "Project & Session", description: "Bootstrap AGENTS.md and session-log folders for a research project.", publicDocs: true },
 	{ name: "outputs", args: "", section: "Project & Session", description: "Browse all research artifacts (papers, outputs, experiments, notes).", publicDocs: true },
 	{ name: "service-tier", args: "", section: "Project & Session", description: "View or set the provider service tier override for supported models.", publicDocs: true },
@@ -74,42 +74,42 @@ export const cliCommandSections = [
 	{
 		title: "Core",
 		commands: [
-			{ usage: "feynman", description: "Launch the interactive REPL." },
-			{ usage: "feynman chat [prompt]", description: "Start chat explicitly, optionally with an initial prompt." },
-			{ usage: "feynman help", description: "Show CLI help." },
-			{ usage: "feynman setup", description: "Run the guided setup wizard." },
-			{ usage: "feynman setup preview", description: "Install or verify preview dependencies." },
-			{ usage: "feynman doctor", description: "Diagnose config, auth, Pi runtime, and preview dependencies." },
-			{ usage: "feynman status", description: "Show the current setup summary." },
+			{ usage: "sherlock-ai", description: "Launch the interactive REPL." },
+			{ usage: "sherlock-ai chat [prompt]", description: "Start chat explicitly, optionally with an initial prompt." },
+			{ usage: "sherlock-ai help", description: "Show CLI help." },
+			{ usage: "sherlock-ai setup", description: "Run the guided setup wizard." },
+			{ usage: "sherlock-ai setup preview", description: "Install or verify preview dependencies." },
+			{ usage: "sherlock-ai doctor", description: "Diagnose config, auth, Pi runtime, and preview dependencies." },
+			{ usage: "sherlock-ai status", description: "Show the current setup summary." },
 		],
 	},
 	{
 		title: "Model Management",
 		commands: [
-			{ usage: "feynman model list", description: "List available models in Pi auth storage." },
-			{ usage: "feynman model login [id]", description: "Authenticate a model provider with OAuth or API-key setup." },
-			{ usage: "feynman model logout [id]", description: "Clear stored auth for a model provider." },
-			{ usage: "feynman model set <provider/model>", description: "Set the default model (also accepts provider:model)." },
-			{ usage: "feynman model tier [value]", description: "View or set the request service tier override." },
+			{ usage: "sherlock-ai model list", description: "List available models in Pi auth storage." },
+			{ usage: "sherlock-ai model login [id]", description: "Authenticate a model provider with OAuth or API-key setup." },
+			{ usage: "sherlock-ai model logout [id]", description: "Clear stored auth for a model provider." },
+			{ usage: "sherlock-ai model set <provider/model>", description: "Set the default model (also accepts provider:model)." },
+			{ usage: "sherlock-ai model tier [value]", description: "View or set the request service tier override." },
 		],
 	},
 	{
 		title: "AlphaXiv",
 		commands: [
-			{ usage: "feynman alpha login", description: "Sign in to alphaXiv." },
-			{ usage: "feynman alpha logout", description: "Clear alphaXiv auth." },
-			{ usage: "feynman alpha status", description: "Check alphaXiv auth status." },
+			{ usage: "sherlock-ai alpha login", description: "Sign in to alphaXiv." },
+			{ usage: "sherlock-ai alpha logout", description: "Clear alphaXiv auth." },
+			{ usage: "sherlock-ai alpha status", description: "Check alphaXiv auth status." },
 		],
 	},
 	{
 		title: "Utilities",
 		commands: [
-			{ usage: "feynman packages list", description: "Show core and optional Pi package presets." },
-			{ usage: "feynman packages install <preset>", description: "Install optional package presets on demand." },
-			{ usage: "feynman search status", description: "Show Pi web-access status and config path." },
-			{ usage: "feynman search set <provider> [api-key]", description: "Set the web search provider and optionally save its API key." },
-			{ usage: "feynman search clear", description: "Reset web search provider to auto while preserving API keys." },
-			{ usage: "feynman update [package]", description: "Update installed packages, or a specific package." },
+			{ usage: "sherlock-ai packages list", description: "Show core and optional Pi package presets." },
+			{ usage: "sherlock-ai packages install <preset>", description: "Install optional package presets on demand." },
+			{ usage: "sherlock-ai search status", description: "Show Pi web-access status and config path." },
+			{ usage: "sherlock-ai search set <provider> [api-key]", description: "Set the web search provider and optionally save its API key." },
+			{ usage: "sherlock-ai search clear", description: "Reset web search provider to auto while preserving API keys." },
+			{ usage: "sherlock-ai update [package]", description: "Update installed packages, or a specific package." },
 		],
 	},
 ];
@@ -125,8 +125,8 @@ export const legacyFlags = [
 	{ usage: "--cwd <path>", description: "Set the working directory for tools." },
 	{ usage: "--session-dir <path>", description: "Set the session storage directory." },
 	{ usage: "--new-session", description: "Start a new persisted session." },
-	{ usage: "--doctor", description: "Alias for `feynman doctor`." },
-	{ usage: "--setup-preview", description: "Alias for `feynman setup preview`." },
+	{ usage: "--doctor", description: "Alias for `sherlock-ai doctor`." },
+	{ usage: "--setup-preview", description: "Alias for `sherlock-ai setup preview`." },
 ];
 
 export const topLevelCommandNames = ["alpha", "chat", "doctor", "help", "model", "packages", "search", "setup", "status", "update"];
@@ -136,7 +136,7 @@ export function formatSlashUsage(command) {
 }
 
 export function formatCliWorkflowUsage(command) {
-	return `feynman ${command.name}${command.args ? ` ${command.args}` : ""}`;
+	return `sherlock-ai ${command.name}${command.args ? ` ${command.args}` : ""}`;
 }
 
 export function getExtensionCommandSpec(name) {

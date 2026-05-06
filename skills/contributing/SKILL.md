@@ -1,18 +1,18 @@
 ---
 name: contributing
-description: Contribute changes to the Feynman repository itself. Use when the task is to add features, fix bugs, update prompts or skills, change install or release behavior, improve docs, or prepare a focused PR against this repo.
+description: Contribute changes to the Sherlock repository itself. Use when the task is to add features, fix bugs, update prompts or skills, change install or release behavior, improve docs, or prepare a focused PR against this repo.
 ---
 
 # Contributing
 
-When working inside the Feynman repository, read the repo-root `CONTRIBUTING.md` and `AGENTS.md` files for project-specific conventions.
+When working inside the Sherlock repository, read the repo-root `CONTRIBUTING.md` and `AGENTS.md` files for project-specific conventions.
 
-Use this skill when working on Feynman itself, especially for:
+Use this skill when working on Sherlock itself, especially for:
 
 - CLI or runtime changes in `src/`
 - prompt changes in `prompts/`
 - bundled skill changes in `skills/`
-- subagent behavior changes in `.feynman/agents/`
+- subagent behavior changes in `.sherlock-ai/agents/`
 - install, packaging, or release changes in `scripts/`, `README.md`, or website docs
 
 Minimum local checks before claiming the repo change is done:

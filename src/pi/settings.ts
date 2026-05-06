@@ -92,16 +92,16 @@ export function readJson(path: string): Record<string, unknown> {
 	try {
 		return JSON.parse(readFileSync(path, "utf8"));
 	} catch (error) {
-		if (process.env.FEYNMAN_DEBUG === "1") {
+		if (process.env.SHERLOCK_AI_DEBUG === "1") {
 			process.stderr.write(
-				`[feynman] warning: failed to parse ${path}, treating as empty (${error instanceof Error ? error.message : "unknown error"})\n`,
+				`[sherlock-ai] warning: failed to parse ${path}, treating as empty (${error instanceof Error ? error.message : "unknown error"})\n`,
 			);
 		}
 		return {};
 	}
 }
 
-export function normalizeFeynmanSettings(
+export function normalizeSherlockSettings(
 	settingsPath: string,
 	bundledSettingsPath: string,
 	defaultThinkingLevel: ThinkingLevel,
@@ -129,7 +129,7 @@ export function normalizeFeynmanSettings(
 	if (settings.editorPaddingX === undefined) {
 		settings.editorPaddingX = 1;
 	}
-	settings.theme = "feynman";
+	settings.theme = "sherlock-ai";
 	settings.quietStartup = true;
 	settings.collapseChangelog = true;
 	const supportedCorePackages = filterPackageSourcesForCurrentNode(CORE_PACKAGE_SOURCES);

@@ -33,9 +33,9 @@ test("bundled prompts and skills do not contain blocked promotional product cont
 
 test("research writing prompts forbid fabricated results and unproven figures", () => {
 	const draftPrompt = readFileSync(join(repoRoot, "prompts", "draft.md"), "utf8");
-	const systemPrompt = readFileSync(join(repoRoot, ".feynman", "SYSTEM.md"), "utf8");
-	const writerPrompt = readFileSync(join(repoRoot, ".feynman", "agents", "writer.md"), "utf8");
-	const verifierPrompt = readFileSync(join(repoRoot, ".feynman", "agents", "verifier.md"), "utf8");
+	const systemPrompt = readFileSync(join(repoRoot, ".sherlock-ai", "SYSTEM.md"), "utf8");
+	const writerPrompt = readFileSync(join(repoRoot, ".sherlock-ai", "agents", "writer.md"), "utf8");
+	const verifierPrompt = readFileSync(join(repoRoot, ".sherlock-ai", "agents", "verifier.md"), "utf8");
 
 	for (const [label, content] of [
 		["system prompt", systemPrompt],
@@ -59,7 +59,7 @@ test("research writing prompts forbid fabricated results and unproven figures", 
 });
 
 test("deepresearch workflow requires durable artifacts even when blocked", () => {
-	const systemPrompt = readFileSync(join(repoRoot, ".feynman", "SYSTEM.md"), "utf8");
+	const systemPrompt = readFileSync(join(repoRoot, ".sherlock-ai", "SYSTEM.md"), "utf8");
 	const deepResearchPrompt = readFileSync(join(repoRoot, "prompts", "deepresearch.md"), "utf8");
 
 	assert.match(systemPrompt, /Do not claim you are only a static model/i);
@@ -72,10 +72,10 @@ test("deepresearch workflow requires durable artifacts even when blocked", () =>
 });
 
 test("research workflows use real web-search tool names and grant them to evidence agents", () => {
-	const systemPrompt = readFileSync(join(repoRoot, ".feynman", "SYSTEM.md"), "utf8");
+	const systemPrompt = readFileSync(join(repoRoot, ".sherlock-ai", "SYSTEM.md"), "utf8");
 	const deepResearchPrompt = readFileSync(join(repoRoot, "prompts", "deepresearch.md"), "utf8");
-	const researcherPrompt = readFileSync(join(repoRoot, ".feynman", "agents", "researcher.md"), "utf8");
-	const verifierPrompt = readFileSync(join(repoRoot, ".feynman", "agents", "verifier.md"), "utf8");
+	const researcherPrompt = readFileSync(join(repoRoot, ".sherlock-ai", "agents", "researcher.md"), "utf8");
+	const verifierPrompt = readFileSync(join(repoRoot, ".sherlock-ai", "agents", "verifier.md"), "utf8");
 
 	assert.match(systemPrompt, /call `web_search`/i);
 	assert.match(systemPrompt, /do not call non-existent aliases such as `google:search`/i);
@@ -113,7 +113,7 @@ test("deepresearch citation and review stages are sequential and avoid giant edi
 });
 
 test("deepresearch requires post-edit verification before claiming fixes landed", () => {
-	const systemPrompt = readFileSync(join(repoRoot, ".feynman", "SYSTEM.md"), "utf8");
+	const systemPrompt = readFileSync(join(repoRoot, ".sherlock-ai", "SYSTEM.md"), "utf8");
 	const deepResearchPrompt = readFileSync(join(repoRoot, "prompts", "deepresearch.md"), "utf8");
 
 	assert.match(systemPrompt, /Do not say a file edit, patch, correction, or reviewer fix was applied/i);

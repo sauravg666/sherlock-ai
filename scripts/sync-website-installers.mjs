@@ -10,4 +10,4 @@ cpSync(resolve(appRoot, "scripts", "install", "install.ps1"), resolve(websitePub
 cpSync(resolve(appRoot, "scripts", "install", "install-skills.sh"), resolve(websitePublicDir, "install-skills"));
 cpSync(resolve(appRoot, "scripts", "install", "install-skills.ps1"), resolve(websitePublicDir, "install-skills.ps1"));
 
-console.log("[feynman] synced website installers");
+console.log("[sherlock-ai] synced website installers");

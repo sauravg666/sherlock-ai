@@ -2,18 +2,18 @@
 
 `AGENTS.md` is the repo-level contract for agents working in this repository.
 
-Pi subagent behavior does **not** live here. The source of truth for bundled Pi subagents is `.feynman/agents/*.md`, which the runtime syncs into the Pi agent directory. If you need to change how `researcher`, `reviewer`, `writer`, or `verifier` behave, edit the corresponding file in `.feynman/agents/` instead of duplicating those prompts here.
+Pi subagent behavior does **not** live here. The source of truth for bundled Pi subagents is `.sherlock-ai/agents/*.md`, which the runtime syncs into the Pi agent directory. If you need to change how `researcher`, `reviewer`, `writer`, or `verifier` behave, edit the corresponding file in `.sherlock-ai/agents/` instead of duplicating those prompts here.
 
 ## Pi subagents
 
-Feynman ships four bundled research subagents:
+Sherlock ships four bundled research subagents:
 
 - `researcher`
 - `reviewer`
 - `writer`
 - `verifier`
 
-They are defined in `.feynman/agents/` and invoked via the Pi `subagent` tool.
+They are defined in `.sherlock-ai/agents/` and invoked via the Pi `subagent` tool.
 
 ## What belongs here
 

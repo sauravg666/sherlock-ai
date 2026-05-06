@@ -16,7 +16,7 @@ import { buildModelStatusSnapshotFromRecords, chooseRecommendedModel, getAvailab
 import { isLocalModelProvider, resolveModelProviderForCommand, setDefaultModelSpec } from "../src/model/commands.js";
 
 function createAuthPath(contents: Record<string, unknown>): string {
-	const root = mkdtempSync(join(tmpdir(), "feynman-auth-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-auth-"));
 	const authPath = join(root, "auth.json");
 	writeFileSync(authPath, JSON.stringify(contents, null, 2) + "\n", "utf8");
 	return authPath;
@@ -67,7 +67,7 @@ test("setDefaultModelSpec accepts a unique bare model id from authenticated mode
 	const authPath = createAuthPath({
 		openai: { type: "api_key", key: "openai-test-key" },
 	});
-	const settingsPath = join(mkdtempSync(join(tmpdir(), "feynman-settings-")), "settings.json");
+	const settingsPath = join(mkdtempSync(join(tmpdir(), "sherlock-ai-settings-")), "settings.json");
 
 	setDefaultModelSpec(settingsPath, authPath, "gpt-5.4");
 
@@ -83,7 +83,7 @@ test("setDefaultModelSpec accepts provider:model syntax for authenticated models
 	const authPath = createAuthPath({
 		google: { type: "api_key", key: "google-test-key" },
 	});
-	const settingsPath = join(mkdtempSync(join(tmpdir(), "feynman-settings-")), "settings.json");
+	const settingsPath = join(mkdtempSync(join(tmpdir(), "sherlock-ai-settings-")), "settings.json");
 
 	setDefaultModelSpec(settingsPath, authPath, "google:gemini-3-pro-preview");
 
@@ -135,7 +135,7 @@ test("setDefaultModelSpec prefers the explicitly configured provider when a bare
 	const authPath = createAuthPath({
 		openai: { type: "api_key", key: "openai-test-key" },
 	});
-	const settingsPath = join(mkdtempSync(join(tmpdir(), "feynman-settings-")), "settings.json");
+	const settingsPath = join(mkdtempSync(join(tmpdir(), "sherlock-ai-settings-")), "settings.json");
 
 	setDefaultModelSpec(settingsPath, authPath, "gpt-5.4");
 
@@ -354,5 +354,5 @@ test("buildLocalModelWorkflowNotice names the configured model and the workflow"
 
 	assert.ok(notice.includes("ollama/gemma4:latest"));
 	assert.ok(notice.includes("/deepresearch"));
-	assert.ok(notice.includes("feynman model set"));
+	assert.ok(notice.includes("sherlock-ai model set"));
 });

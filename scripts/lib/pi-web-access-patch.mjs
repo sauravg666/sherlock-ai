@@ -13,7 +13,7 @@ export const PI_WEB_ACCESS_PATCH_TARGETS = [
 
 const LEGACY_CONFIG_EXPR = 'join(homedir(), ".pi", "web-search.json")';
 const PATCHED_CONFIG_EXPR =
-	'process.env.FEYNMAN_WEB_SEARCH_CONFIG ?? process.env.PI_WEB_SEARCH_CONFIG ?? join(homedir(), ".pi", "web-search.json")';
+	'process.env.SHERLOCK_AI_WEB_SEARCH_CONFIG ?? process.env.PI_WEB_SEARCH_CONFIG ?? join(homedir(), ".pi", "web-search.json")';
 
 function patchGeminiWebSource(source) {
 	let patched = source;

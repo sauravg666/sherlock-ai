@@ -18,7 +18,7 @@ async function run(): Promise<void> {
 		throw new Error("Missing Pi main module path.");
 	}
 
-	process.title = "feynman";
+	process.title = "sherlock-ai";
 	process.env.PI_CODING_AGENT = "true";
 	process.emitWarning = (() => undefined) as typeof process.emitWarning;
 	process.stdin?.on?.("error", handleStdinError);

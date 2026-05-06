@@ -2,7 +2,7 @@ import { isLoggedIn as isAlphaLoggedIn, login as loginAlpha } from "@companion-a
 import { dirname } from "node:path";
 
 import { getPiWebAccessStatus } from "../pi/web-access.js";
-import { normalizeFeynmanSettings } from "../pi/settings.js";
+import { normalizeSherlockSettings } from "../pi/settings.js";
 import type { ThinkingLevel } from "../pi/settings.js";
 import { getMissingConfiguredPackages, installPackageSources } from "../pi/package-ops.js";
 import { listOptionalPackagePresets } from "../pi/package-presets.js";
@@ -32,11 +32,11 @@ type SetupOptions = {
 
 function printNonInteractiveSetupGuidance(): void {
 	printInfo("Non-interactive terminal. Use explicit commands:");
-	printInfo("  feynman model login <provider>");
-	printInfo("  feynman model set <provider/model>");
-	printInfo("  # or configure API keys via env vars/auth.json and rerun `feynman model list`");
-	printInfo("  feynman alpha login");
-	printInfo("  feynman doctor");
+	printInfo("  sherlock-ai model login <provider>");
+	printInfo("  sherlock-ai model set <provider/model>");
+	printInfo("  # or configure API keys via env vars/auth.json and rerun `sherlock-ai model list`");
+	printInfo("  sherlock-ai alpha login");
+	printInfo("  sherlock-ai doctor");
 }
 
 function summarizePackageSources(sources: string[]): string {
@@ -64,9 +64,9 @@ async function maybeInstallBundledPackages(options: SetupOptions): Promise<void>
 	}
 
 	printInfo(`Missing packages: ${summarizePackageSources(missing.map((entry) => entry.source))}`);
-	const shouldInstall = await promptConfirm("Install missing Feynman packages now?", true);
+	const shouldInstall = await promptConfirm("Install missing Sherlock packages now?", true);
 	if (!shouldInstall) {
-		printInfo("Skipping package install. Feynman may install missing packages later if needed.");
+		printInfo("Skipping package install. Sherlock may install missing packages later if needed.");
 		return;
 	}
 
@@ -179,14 +179,14 @@ export async function runSetup(options: SetupOptions): Promise<void> {
 	}
 
 	try {
-		await promptIntro("Feynman setup");
+		await promptIntro("Sherlock setup");
 		await runModelSetup(options.settingsPath, options.authPath);
 		await maybeInstallBundledPackages(options);
 		await maybeInstallOptionalPackages(options);
 		await maybeLoginAlpha();
 		await maybeInstallPreviewDependencies();
 
-		normalizeFeynmanSettings(
+		normalizeSherlockSettings(
 			options.settingsPath,
 			options.bundledSettingsPath,
 			options.defaultThinkingLevel ?? "medium",
@@ -207,7 +207,7 @@ export async function runSetup(options: SetupOptions): Promise<void> {
 			printInfo(`Recommended model: ${modelStatus.recommended}`);
 		}
 
-		await promptOutro("Feynman is ready");
+		await promptOutro("Sherlock is ready");
 	} catch (error) {
 		if (error instanceof SetupCancelledError) {
 			printInfo("Setup cancelled.");

@@ -4,7 +4,7 @@ import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { delimiter, dirname, isAbsolute, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { FEYNMAN_LOGO_HTML } from "../logo.mjs";
+import { SHERLOCK_AI_LOGO_HTML } from "../logo.mjs";
 import { patchAlphaHubAuthSource } from "./lib/alpha-hub-auth-patch.mjs";
 import { patchPiAgentCoreSource } from "./lib/pi-agent-core-patch.mjs";
 import { patchPiExtensionLoaderSource } from "./lib/pi-extension-loader-patch.mjs";
@@ -15,11 +15,11 @@ import { PI_SUBAGENTS_PATCH_TARGETS, patchPiSubagentsSource, stripPiSubagentBuil
 
 const here = dirname(fileURLToPath(import.meta.url));
 const appRoot = resolve(here, "..");
-const feynmanHome = resolve(process.env.FEYNMAN_HOME ?? homedir(), ".feynman");
-const feynmanNpmPrefix = resolve(feynmanHome, "npm-global");
-process.env.FEYNMAN_NPM_PREFIX = feynmanNpmPrefix;
-process.env.NPM_CONFIG_PREFIX = feynmanNpmPrefix;
-process.env.npm_config_prefix = feynmanNpmPrefix;
+const sherlockHome = resolve(process.env.SHERLOCK_AI_HOME ?? homedir(), ".sherlock-ai");
+const sherlockNpmPrefix = resolve(sherlockHome, "npm-global");
+process.env.SHERLOCK_AI_NPM_PREFIX = sherlockNpmPrefix;
+process.env.NPM_CONFIG_PREFIX = sherlockNpmPrefix;
+process.env.npm_config_prefix = sherlockNpmPrefix;
 const appRequire = createRequire(resolve(appRoot, "package.json"));
 const isGlobalInstall = process.env.npm_config_global === "true" || process.env.npm_config_location === "global";
 
@@ -57,7 +57,7 @@ const piTuiRoot = findPackageRoot("@mariozechner/pi-tui");
 const piAiRoot = findPackageRoot("@mariozechner/pi-ai");
 
 if (!piPackageRoot) {
-	console.warn("[feynman] pi-coding-agent not found, skipping Pi patches");
+	console.warn("[sherlock-ai] pi-coding-agent not found, skipping Pi patches");
 }
 
 const packageJsonPath = piPackageRoot ? resolve(piPackageRoot, "package.json") : null;
@@ -71,7 +71,7 @@ const agentLoopPath = piAgentCoreRoot ? resolve(piAgentCoreRoot, "dist", "agent-
 const tuiPath = piTuiRoot ? resolve(piTuiRoot, "dist", "tui.js") : null;
 const terminalPath = piTuiRoot ? resolve(piTuiRoot, "dist", "terminal.js") : null;
 const editorPath = piTuiRoot ? resolve(piTuiRoot, "dist", "components", "editor.js") : null;
-const workspaceRoot = resolve(appRoot, ".feynman", "npm", "node_modules");
+const workspaceRoot = resolve(appRoot, ".sherlock-ai", "npm", "node_modules");
 const workspaceAgentLoopPath = resolve(
 	workspaceRoot,
 	"@mariozechner",
@@ -104,13 +104,13 @@ const sessionSearchIndexerPath = resolve(
 	"indexer.ts",
 );
 const piMemoryPath = resolve(workspaceRoot, "@samfp", "pi-memory", "src", "index.ts");
-const settingsPath = resolve(appRoot, ".feynman", "settings.json");
-const workspaceDir = resolve(appRoot, ".feynman", "npm");
+const settingsPath = resolve(appRoot, ".sherlock-ai", "settings.json");
+const workspaceDir = resolve(appRoot, ".sherlock-ai", "npm");
 const workspacePackageJsonPath = resolve(workspaceDir, "package.json");
 const workspaceManifestPath = resolve(workspaceDir, ".runtime-manifest.json");
-const workspaceArchivePath = resolve(appRoot, ".feynman", "runtime-workspace.tgz");
-const workspaceSetupLockDir = resolve(appRoot, ".feynman", ".workspace-setup.lock");
-const globalNodeModulesRoot = resolve(feynmanNpmPrefix, "lib", "node_modules");
+const workspaceArchivePath = resolve(appRoot, ".sherlock-ai", "runtime-workspace.tgz");
+const workspaceSetupLockDir = resolve(appRoot, ".sherlock-ai", ".workspace-setup.lock");
+const globalNodeModulesRoot = resolve(sherlockNpmPrefix, "lib", "node_modules");
 const PRUNE_VERSION = 6;
 const WORKSPACE_SETUP_LOCK_STALE_MS = 300000;
 const NATIVE_PACKAGE_SPECS = new Set([
@@ -163,7 +163,7 @@ let cachedPackageManager = undefined;
 function resolvePackageManager() {
 	if (cachedPackageManager !== undefined) return cachedPackageManager;
 
-	const requested = process.env.FEYNMAN_PACKAGE_MANAGER?.trim();
+	const requested = process.env.SHERLOCK_AI_PACKAGE_MANAGER?.trim();
 	const candidates = requested ? [requested] : ["npm", "pnpm", "bun"];
 	for (const candidate of candidates) {
 		if (resolveExecutable(candidate)) {
@@ -180,7 +180,7 @@ function installWorkspacePackages(packageSpecs) {
 	const packageManager = resolvePackageManager();
 	if (!packageManager) {
 		process.stderr.write(
-			"[feynman] no supported package manager found; install npm, pnpm, or bun, or set FEYNMAN_PACKAGE_MANAGER.\n",
+			"[sherlock-ai] no supported package manager found; install npm, pnpm, or bun, or set SHERLOCK_AI_PACKAGE_MANAGER.\n",
 		);
 		return false;
 	}
@@ -205,7 +205,7 @@ function installWorkspacePackages(packageSpecs) {
 	}
 
 	if (result.status !== 0) {
-		process.stderr.write(`[feynman] ${packageManager} failed while setting up bundled packages.\n`);
+		process.stderr.write(`[sherlock-ai] ${packageManager} failed while setting up bundled packages.\n`);
 		return false;
 	}
 
@@ -399,9 +399,9 @@ function restorePackagedWorkspace(packageSpecs) {
 	if (!existsSync(workspaceArchivePath)) return false;
 
 	rmSync(workspaceDir, { recursive: true, force: true });
-	mkdirSync(resolve(appRoot, ".feynman"), { recursive: true });
+	mkdirSync(resolve(appRoot, ".sherlock-ai"), { recursive: true });
 
-	const result = spawnSync("tar", ["-xzf", workspaceArchivePath, "-C", resolve(appRoot, ".feynman")], {
+	const result = spawnSync("tar", ["-xzf", workspaceArchivePath, "-C", resolve(appRoot, ".sherlock-ai")], {
 		stdio: ["ignore", "ignore", "pipe"],
 		timeout: 300000,
 	});
@@ -476,7 +476,7 @@ function acquireWorkspaceSetupLock() {
 				}
 			} catch {}
 			if (Date.now() - startedAt > WORKSPACE_SETUP_LOCK_STALE_MS) {
-				throw new Error("Timed out waiting for another Feynman process to finish package setup.");
+				throw new Error("Timed out waiting for another Sherlock process to finish package setup.");
 			}
 			sleepSync(100);
 		}
@@ -519,7 +519,7 @@ function ensurePackageWorkspaceUnlocked() {
 	mkdirSync(workspaceDir, { recursive: true });
 	writeFileSync(
 		workspacePackageJsonPath,
-		JSON.stringify({ name: "feynman-packages", private: true }, null, 2) + "\n",
+		JSON.stringify({ name: "sherlock-ai-packages", private: true }, null, 2) + "\n",
 		"utf8",
 	);
 
@@ -528,7 +528,7 @@ function ensurePackageWorkspaceUnlocked() {
 	const start = Date.now();
 	const spinner = setInterval(() => {
 		const elapsed = Math.round((Date.now() - start) / 1000);
-		process.stderr.write(`\r${frames[frame++ % frames.length]} setting up feynman... ${elapsed}s`);
+		process.stderr.write(`\r${frames[frame++ % frames.length]} setting up sherlock-ai... ${elapsed}s`);
 	}, 80);
 
 	const result = installWorkspacePackages(supportedPackageSpecs);
@@ -550,19 +550,19 @@ ensurePackageWorkspace();
 function ensurePandoc() {
 	if (!isGlobalInstall) return;
 	if (process.platform !== "darwin") return;
-	if (process.env.FEYNMAN_SKIP_PANDOC_INSTALL === "1") return;
+	if (process.env.SHERLOCK_AI_SKIP_PANDOC_INSTALL === "1") return;
 	if (resolveExecutable("pandoc", ["/opt/homebrew/bin/pandoc", "/usr/local/bin/pandoc"])) return;
 
 	const brewPath = resolveExecutable("brew", ["/opt/homebrew/bin/brew", "/usr/local/bin/brew"]);
 	if (!brewPath) return;
 
-	console.log("[feynman] installing pandoc...");
+	console.log("[sherlock-ai] installing pandoc...");
 	const result = spawnSync(brewPath, ["install", "pandoc"], {
 		stdio: "inherit",
 		timeout: 300000,
 	});
 	if (result.status !== 0) {
-		console.warn("[feynman] warning: pandoc install failed, run `feynman --setup-preview` later");
+		console.warn("[sherlock-ai] warning: pandoc install failed, run `sherlock-ai --setup-preview` later");
 	}
 }
 
@@ -596,11 +596,11 @@ if (existsSync(piSubagentsRoot)) {
 
 if (packageJsonPath && existsSync(packageJsonPath)) {
 	const pkg = JSON.parse(readFileSync(packageJsonPath, "utf8"));
-	if (pkg.piConfig?.name !== "feynman" || pkg.piConfig?.configDir !== ".feynman") {
+	if (pkg.piConfig?.name !== "sherlock-ai" || pkg.piConfig?.configDir !== ".sherlock-ai") {
 		pkg.piConfig = {
 			...(pkg.piConfig || {}),
-			name: "feynman",
-			configDir: ".feynman",
+			name: "sherlock-ai",
+			configDir: ".sherlock-ai",
 		};
 		writeFileSync(packageJsonPath, JSON.stringify(pkg, null, "\t") + "\n", "utf8");
 	}
@@ -613,10 +613,10 @@ for (const entryPath of [cliPath, bunCliPath].filter(Boolean)) {
 
 	let cliSource = readFileSync(entryPath, "utf8");
 	if (cliSource.includes('process.title = "pi";')) {
-		cliSource = cliSource.replace('process.title = "pi";', 'process.title = "feynman";');
+		cliSource = cliSource.replace('process.title = "pi";', 'process.title = "sherlock-ai";');
 	}
 	const stdinErrorGuard = [
-		"const feynmanHandleStdinError = (error) => {",
+		"const sherlockHandleStdinError = (error) => {",
 		'    if (error && typeof error === "object") {',
 		'        const code = "code" in error ? error.code : undefined;',
 		'        const syscall = "syscall" in error ? error.syscall : undefined;',
@@ -625,9 +625,9 @@ for (const entryPath of [cliPath, bunCliPath].filter(Boolean)) {
 		"        }",
 		"    }",
 		"};",
-		'process.stdin?.on?.("error", feynmanHandleStdinError);',
+		'process.stdin?.on?.("error", sherlockHandleStdinError);',
 	].join("\n");
-	if (!cliSource.includes('process.stdin?.on?.("error", feynmanHandleStdinError);')) {
+	if (!cliSource.includes('process.stdin?.on?.("error", sherlockHandleStdinError);')) {
 		cliSource = cliSource.replace(
 			'process.emitWarning = (() => { });',
 			`process.emitWarning = (() => { });\n${stdinErrorGuard}`,
@@ -681,8 +681,8 @@ if (interactiveModePath && existsSync(interactiveModePath)) {
 		writeFileSync(
 			interactiveModePath,
 			interactiveModeSource
-				.replace("`π - ${sessionName} - ${cwdBasename}`", "`feynman - ${sessionName} - ${cwdBasename}`")
-				.replace("`π - ${cwdBasename}`", "`feynman - ${cwdBasename}`"),
+				.replace("`π - ${sessionName} - ${cwdBasename}`", "`sherlock-ai - ${sessionName} - ${cwdBasename}`")
+				.replace("`π - ${cwdBasename}`", "`sherlock-ai - ${cwdBasename}`"),
 			"utf8",
 		);
 	}
@@ -915,7 +915,7 @@ if (existsSync(sessionSearchIndexerPath)) {
 	const source = readFileSync(sessionSearchIndexerPath, "utf8");
 	const original = 'const sessionsDir = path.join(os.homedir(), ".pi", "agent", "sessions");';
 	const replacement =
-		'const sessionsDir = process.env.FEYNMAN_SESSION_DIR ?? process.env.PI_SESSION_DIR ?? path.join(os.homedir(), ".pi", "agent", "sessions");';
+		'const sessionsDir = process.env.SHERLOCK_AI_SESSION_DIR ?? process.env.PI_SESSION_DIR ?? path.join(os.homedir(), ".pi", "agent", "sessions");';
 	if (source.includes(original)) {
 		writeFileSync(sessionSearchIndexerPath, source.replace(original, replacement), "utf8");
 	}
@@ -926,7 +926,7 @@ const oauthPagePath = piAiRoot ? resolve(piAiRoot, "dist", "utils", "oauth", "oa
 if (oauthPagePath && existsSync(oauthPagePath)) {
 	let source = readFileSync(oauthPagePath, "utf8");
 	let changed = false;
-	const target = `const LOGO_SVG = \`${FEYNMAN_LOGO_HTML}\`;`;
+	const target = `const LOGO_SVG = \`${SHERLOCK_AI_LOGO_HTML}\`;`;
 	if (!source.includes(target)) {
 		source = source.replace(/const LOGO_SVG = `[^`]*`;/, target);
 		changed = true;
@@ -950,15 +950,15 @@ if (existsSync(piMemoryPath)) {
 	let source = readFileSync(piMemoryPath, "utf8");
 	const memoryOriginal = 'const MEMORY_DIR = join(homedir(), ".pi", "memory");';
 	const memoryReplacement =
-		'const MEMORY_DIR = process.env.FEYNMAN_MEMORY_DIR ?? process.env.PI_MEMORY_DIR ?? join(homedir(), ".pi", "memory");';
+		'const MEMORY_DIR = process.env.SHERLOCK_AI_MEMORY_DIR ?? process.env.PI_MEMORY_DIR ?? join(homedir(), ".pi", "memory");';
 	if (source.includes(memoryOriginal)) {
 		source = source.replace(memoryOriginal, memoryReplacement);
 	}
 	const execOriginal = 'const result = await pi.exec("pi", ["-p", prompt, "--print"], {';
 	const execReplacement = [
-		'const execBinary = process.env.FEYNMAN_NODE_EXECUTABLE || process.env.FEYNMAN_EXECUTABLE || "pi";',
-		'      const execArgs = process.env.FEYNMAN_BIN_PATH',
-		'        ? [process.env.FEYNMAN_BIN_PATH, "--prompt", prompt]',
+		'const execBinary = process.env.SHERLOCK_AI_NODE_EXECUTABLE || process.env.SHERLOCK_AI_EXECUTABLE || "pi";',
+		'      const execArgs = process.env.SHERLOCK_AI_BIN_PATH',
+		'        ? [process.env.SHERLOCK_AI_BIN_PATH, "--prompt", prompt]',
 		'        : ["-p", prompt, "--print"];',
 		'      const result = await pi.exec(execBinary, execArgs, {',
 	].join("\n");

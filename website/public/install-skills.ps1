@@ -23,10 +23,10 @@ function Normalize-Version {
 }
 
 function Resolve-LatestReleaseVersion {
-  $page = Invoke-WebRequest -Uri "https://github.com/getcompanion-ai/feynman/releases/latest"
+  $page = Invoke-WebRequest -Uri "https://github.com/sauravg666/sherlock-ai/releases/latest"
   $match = [regex]::Match($page.Content, 'releases/tag/v([0-9][^"''<>\s]*)')
   if (-not $match.Success) {
-    throw "Failed to resolve the latest Feynman release version."
+    throw "Failed to resolve the latest Sherlock release version."
   }
 
   return $match.Groups[1].Value
@@ -46,7 +46,7 @@ function Resolve-VersionMetadata {
   return [PSCustomObject]@{
     ResolvedVersion = $resolvedVersion
     GitRef = "v$resolvedVersion"
-    DownloadUrl = if ($env:FEYNMAN_INSTALL_SKILLS_ARCHIVE_URL) { $env:FEYNMAN_INSTALL_SKILLS_ARCHIVE_URL } else { "https://github.com/getcompanion-ai/feynman/archive/refs/tags/v$resolvedVersion.zip" }
+    DownloadUrl = if ($env:SHERLOCK_AI_INSTALL_SKILLS_ARCHIVE_URL) { $env:SHERLOCK_AI_INSTALL_SKILLS_ARCHIVE_URL } else { "https://github.com/sauravg666/sherlock-ai/archive/refs/tags/v$resolvedVersion.zip" }
   }
 }
 
@@ -61,14 +61,14 @@ function Resolve-InstallDir {
   }
 
   if ($ResolvedScope -eq "Repo") {
-    return Join-Path (Get-Location) ".agents\skills\feynman"
+    return Join-Path (Get-Location) ".agents\skills\sherlock-ai"
   }
   if ($ResolvedScope -eq "OpenCode") {
-    return Join-Path (Get-Location) ".opencode\skills\feynman"
+    return Join-Path (Get-Location) ".opencode\skills\sherlock-ai"
   }
 
   $codexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
-  return Join-Path $codexHome "skills\feynman"
+  return Join-Path $codexHome "skills\sherlock-ai"
 }
 
 $metadata = Resolve-VersionMetadata -RequestedVersion $Version
@@ -76,14 +76,14 @@ $resolvedVersion = $metadata.ResolvedVersion
 $downloadUrl = $metadata.DownloadUrl
 $installDir = Resolve-InstallDir -ResolvedScope $Scope -ResolvedTargetDir $TargetDir
 
-$tmpDir = Join-Path ([System.IO.Path]::GetTempPath()) ("feynman-skills-install-" + [System.Guid]::NewGuid().ToString("N"))
+$tmpDir = Join-Path ([System.IO.Path]::GetTempPath()) ("sherlock-ai-skills-install-" + [System.Guid]::NewGuid().ToString("N"))
 New-Item -ItemType Directory -Path $tmpDir | Out-Null
 
 try {
-  $archivePath = Join-Path $tmpDir "feynman-skills.zip"
+  $archivePath = Join-Path $tmpDir "sherlock-ai-skills.zip"
   $extractDir = Join-Path $tmpDir "extract"
 
-  Write-Host "==> Downloading Feynman skills $resolvedVersion"
+  Write-Host "==> Downloading Sherlock skills $resolvedVersion"
   Invoke-WebRequest -Uri $downloadUrl -OutFile $archivePath
 
   Write-Host "==> Extracting skills"
@@ -91,7 +91,7 @@ try {
 
   $sourceRoot = Get-ChildItem -Path $extractDir -Directory | Select-Object -First 1
   if (-not $sourceRoot) {
-    throw "Could not find extracted Feynman archive."
+    throw "Could not find extracted Sherlock archive."
   }
 
   $skillsSource = Join-Path $sourceRoot.FullName "skills"
@@ -125,7 +125,7 @@ try {
     Write-Host "User-level skills will be discovered from `$CODEX_HOME/skills."
   }
 
-  Write-Host "Feynman skills $resolvedVersion installed successfully."
+  Write-Host "Sherlock skills $resolvedVersion installed successfully."
 } finally {
   if (Test-Path $tmpDir) {
     Remove-Item -Recurse -Force $tmpDir

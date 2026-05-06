@@ -14,7 +14,7 @@ import {
 import { SettingsManager } from "@mariozechner/pi-coding-agent";
 
 import { syncBundledAssets } from "./bootstrap/sync.js";
-import { ensureFeynmanHome, getDefaultSessionDir, getFeynmanAgentDir, getFeynmanHome } from "./config/paths.js";
+import { ensureSherlockHome, getDefaultSessionDir, getSherlockAgentDir, getSherlockHome } from "./config/paths.js";
 import { launchPiChat } from "./pi/launch.js";
 import { installPackageSources, updateConfiguredPackages } from "./pi/package-ops.js";
 import { MAX_NATIVE_PACKAGE_NODE_MAJOR } from "./pi/package-presets.js";
@@ -27,8 +27,8 @@ import {
 	normalizeOptionalPackagePresetName,
 	resolvePackageUpdateSources,
 } from "./pi/package-presets.js";
-import { normalizeFeynmanSettings, normalizeThinkingLevel, parseModelSpec, type ThinkingLevel } from "./pi/settings.js";
-import { applyFeynmanPackageManagerEnv } from "./pi/runtime.js";
+import { normalizeSherlockSettings, normalizeThinkingLevel, parseModelSpec, type ThinkingLevel } from "./pi/settings.js";
+import { applySherlockPackageManagerEnv } from "./pi/runtime.js";
 import { getConfiguredServiceTier, normalizeServiceTier, setConfiguredServiceTier } from "./model/service-tier.js";
 import {
 	authenticateModelProvider,
@@ -70,15 +70,15 @@ function printHelp(appRoot: string): void {
 
 	printAsciiHeader([
 		"Research-first agent shell built on Pi.",
-		"Use `feynman setup` first if this is a new machine.",
+		"Use `sherlock-ai setup` first if this is a new machine.",
 	]);
 
 	printSection("Getting Started");
-	printInfo("feynman");
-	printInfo("feynman setup");
-	printInfo("feynman doctor");
-	printInfo("feynman model");
-	printInfo("feynman search status");
+	printInfo("sherlock-ai");
+	printInfo("sherlock-ai setup");
+	printInfo("sherlock-ai doctor");
+	printInfo("sherlock-ai model");
+	printInfo("sherlock-ai search status");
 
 	printSection("Commands");
 	for (const section of cliCommandSections) {
@@ -134,56 +134,56 @@ async function handleAlphaCommand(action: string | undefined): Promise<void> {
 	throw new Error(`Unknown alpha command: ${action}`);
 }
 
-async function handleModelCommand(subcommand: string | undefined, args: string[], feynmanSettingsPath: string, feynmanAuthPath: string): Promise<void> {
+async function handleModelCommand(subcommand: string | undefined, args: string[], sherlockSettingsPath: string, sherlockAuthPath: string): Promise<void> {
 	if (!subcommand || subcommand === "list") {
-		printModelList(feynmanSettingsPath, feynmanAuthPath);
+		printModelList(sherlockSettingsPath, sherlockAuthPath);
 		return;
 	}
 
 	if (subcommand === "login") {
 		if (args[0]) {
 			// Specific provider given - resolve OAuth vs API-key setup automatically
-			await loginModelProvider(feynmanAuthPath, args[0], feynmanSettingsPath);
+			await loginModelProvider(sherlockAuthPath, args[0], sherlockSettingsPath);
 		} else {
 			// No provider specified - show auth method choice
-			await authenticateModelProvider(feynmanAuthPath, feynmanSettingsPath);
+			await authenticateModelProvider(sherlockAuthPath, sherlockSettingsPath);
 		}
 		return;
 	}
 
 	if (subcommand === "logout") {
-		await logoutModelProvider(feynmanAuthPath, args[0]);
+		await logoutModelProvider(sherlockAuthPath, args[0]);
 		return;
 	}
 
 	if (subcommand === "set") {
 		const spec = args[0];
 		if (!spec) {
-			throw new Error("Usage: feynman model set <provider/model|provider:model>");
+			throw new Error("Usage: sherlock-ai model set <provider/model|provider:model>");
 		}
-		setDefaultModelSpec(feynmanSettingsPath, feynmanAuthPath, spec);
+		setDefaultModelSpec(sherlockSettingsPath, sherlockAuthPath, spec);
 		return;
 	}
 
 	if (subcommand === "tier") {
 		const requested = args[0];
 		if (!requested) {
-			console.log(getConfiguredServiceTier(feynmanSettingsPath) ?? "not set");
+			console.log(getConfiguredServiceTier(sherlockSettingsPath) ?? "not set");
 			return;
 		}
 
 		if (requested === "unset" || requested === "clear" || requested === "off") {
-			setConfiguredServiceTier(feynmanSettingsPath, undefined);
+			setConfiguredServiceTier(sherlockSettingsPath, undefined);
 			console.log("Cleared service tier override");
 			return;
 		}
 
 		const tier = normalizeServiceTier(requested);
 		if (!tier) {
-			throw new Error("Usage: feynman model tier <auto|default|flex|priority|standard_only|unset>");
+			throw new Error("Usage: sherlock-ai model tier <auto|default|flex|priority|standard_only|unset>");
 		}
 
-		setConfiguredServiceTier(feynmanSettingsPath, tier);
+		setConfiguredServiceTier(sherlockSettingsPath, tier);
 		console.log(`Service tier set to ${tier}`);
 		return;
 	}
@@ -191,12 +191,12 @@ async function handleModelCommand(subcommand: string | undefined, args: string[]
 	throw new Error(`Unknown model command: ${subcommand}`);
 }
 
-async function handleUpdateCommand(workingDir: string, feynmanAgentDir: string, source?: string): Promise<void> {
+async function handleUpdateCommand(workingDir: string, sherlockAgentDir: string, source?: string): Promise<void> {
 	try {
 		const updateSources = source ? resolvePackageUpdateSources(source) : [undefined];
 		const results = [];
 		for (const updateSource of updateSources) {
-			results.push(await updateConfiguredPackages(workingDir, feynmanAgentDir, updateSource));
+			results.push(await updateConfiguredPackages(workingDir, sherlockAgentDir, updateSource));
 		}
 
 		const updated = results.flatMap((result) => result.updated);
@@ -231,9 +231,9 @@ async function handleUpdateCommand(workingDir: string, feynmanAgentDir: string, 
 	}
 }
 
-async function handlePackagesCommand(subcommand: string | undefined, args: string[], workingDir: string, feynmanAgentDir: string): Promise<void> {
-	applyFeynmanPackageManagerEnv(feynmanAgentDir);
-	const settingsManager = SettingsManager.create(workingDir, feynmanAgentDir);
+async function handlePackagesCommand(subcommand: string | undefined, args: string[], workingDir: string, sherlockAgentDir: string): Promise<void> {
+	applySherlockPackageManagerEnv(sherlockAgentDir);
+	const settingsManager = SettingsManager.create(workingDir, sherlockAgentDir);
 	const configuredSources = new Set(
 		settingsManager
 			.getPackages()
@@ -242,7 +242,7 @@ async function handlePackagesCommand(subcommand: string | undefined, args: strin
 	);
 
 	if (!subcommand || subcommand === "list") {
-		printPanel("Feynman Packages", [
+		printPanel("Sherlock Packages", [
 			"Core packages are installed by default to keep first-run setup fast.",
 		]);
 		printSection("Core");
@@ -260,7 +260,7 @@ async function handlePackagesCommand(subcommand: string | undefined, args: strin
 			const installed = preset.sources.every((source) => configuredSources.has(source));
 			printInfo(`${preset.name}${installed ? " (installed)" : ""}  ${preset.description}`);
 		}
-		printInfo(`Install with: feynman packages install <${listOptionalPackagePresetInstallTargets().join("|")}>`);
+		printInfo(`Install with: sherlock-ai packages install <${listOptionalPackagePresetInstallTargets().join("|")}>`);
 		return;
 	}
 
@@ -274,7 +274,7 @@ async function handlePackagesCommand(subcommand: string | undefined, args: strin
 		if (installTargets.length === 0) {
 			throw new Error(`No optional package presets are available on ${process.platform}. Core packages already include memory and session search.`);
 		}
-		throw new Error(`Usage: feynman packages install <${installTargets.join("|")}>`);
+		throw new Error(`Usage: sherlock-ai packages install <${installTargets.join("|")}>`);
 	}
 
 	const sources = getOptionalPackagePresetSources(target);
@@ -300,11 +300,11 @@ async function handlePackagesCommand(subcommand: string | undefined, args: strin
 	}
 
 	const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-	const isStandaloneBundle = !existsSync(resolve(appRoot, ".feynman", "runtime-workspace.tgz")) && existsSync(resolve(appRoot, ".feynman", "npm"));
+	const isStandaloneBundle = !existsSync(resolve(appRoot, ".sherlock-ai", "runtime-workspace.tgz")) && existsSync(resolve(appRoot, ".sherlock-ai", "npm"));
 	if (target === "generative-ui" && process.platform === "darwin" && isStandaloneBundle) {
 		console.log("The generative-ui preset is currently unavailable in the standalone macOS bundle.");
 		console.log("Its native glimpseui dependency fails to compile reliably in that environment.");
-		console.log("If you need generative-ui, install Feynman through npm instead of the standalone bundle.");
+		console.log("If you need generative-ui, install Sherlock through npm instead of the standalone bundle.");
 		return;
 	}
 
@@ -321,7 +321,7 @@ async function handlePackagesCommand(subcommand: string | undefined, args: strin
 	}
 
 	try {
-		const result = await installPackageSources(workingDir, feynmanAgentDir, pendingSources, { persist: true });
+		const result = await installPackageSources(workingDir, sherlockAgentDir, pendingSources, { persist: true });
 		for (const skippedSource of result.skipped) {
 			console.log(`Skipped ${skippedSource} on Node ${process.versions.node} (native packages are only supported through Node ${MAX_NATIVE_PACKAGE_NODE_MAJOR}.x).`);
 		}
@@ -354,7 +354,7 @@ function handleSearchCommand(subcommand: string | undefined, args: string[]): vo
 		const provider = args[0] as PiWebSearchProvider | undefined;
 		const validProviders: PiWebSearchProvider[] = ["auto", "perplexity", "exa", "gemini"];
 		if (!provider || !validProviders.includes(provider)) {
-			throw new Error("Usage: feynman search set <auto|perplexity|exa|gemini> [api-key]");
+			throw new Error("Usage: sherlock-ai search set <auto|perplexity|exa|gemini> [api-key]");
 		}
 		setSearchProvider(provider, args[1]);
 		return;
@@ -420,7 +420,7 @@ export function buildLocalModelWorkflowNotice(modelSpec: string, workflowName: s
 	return [
 		`Warning: ${modelSpec} is a local provider.`,
 		`Small local models often ignore /${workflowName}'s multi-step workflow and return a chat-only reply with no files under outputs/.`,
-		"Use a stronger model with `feynman model set <provider/model>` if this run produces no artifacts.",
+		"Use a stronger model with `sherlock-ai model set <provider/model>` if this run produces no artifacts.",
 	].join(" ");
 }
 
@@ -475,13 +475,13 @@ export function shouldRunInteractiveSetup(
 export async function main(): Promise<void> {
 	const here = dirname(fileURLToPath(import.meta.url));
 	const appRoot = resolve(here, "..");
-	const feynmanVersion = loadPackageVersion(appRoot).version;
-	const bundledSettingsPath = resolve(appRoot, ".feynman", "settings.json");
-	const feynmanHome = getFeynmanHome();
-	const feynmanAgentDir = getFeynmanAgentDir(feynmanHome);
+	const sherlockVersion = loadPackageVersion(appRoot).version;
+	const bundledSettingsPath = resolve(appRoot, ".sherlock-ai", "settings.json");
+	const sherlockHome = getSherlockHome();
+	const sherlockAgentDir = getSherlockAgentDir(sherlockHome);
 
-	ensureFeynmanHome(feynmanHome);
-	syncBundledAssets(appRoot, feynmanAgentDir);
+	ensureSherlockHome(sherlockHome);
+	syncBundledAssets(appRoot, sherlockAgentDir);
 
 	const { values, positionals } = parseArgs({
 		args: process.argv.slice(2),
@@ -515,25 +515,25 @@ export async function main(): Promise<void> {
 	}
 
 	if (values.version) {
-		if (feynmanVersion) {
-			console.log(feynmanVersion);
+		if (sherlockVersion) {
+			console.log(sherlockVersion);
 			return;
 		}
-		throw new Error("Unable to determine the installed Feynman version.");
+		throw new Error("Unable to determine the installed Sherlock version.");
 	}
 
 	const workingDir = resolve(values.cwd ?? process.cwd());
-	const sessionDir = resolve(values["session-dir"] ?? getDefaultSessionDir(feynmanHome));
-	const feynmanSettingsPath = resolve(feynmanAgentDir, "settings.json");
-	const feynmanAuthPath = resolve(feynmanAgentDir, "auth.json");
-	const { defaultThinkingLevel, launchThinkingLevel } = resolveThinkingConfig(values.thinking ?? process.env.FEYNMAN_THINKING);
+	const sessionDir = resolve(values["session-dir"] ?? getDefaultSessionDir(sherlockHome));
+	const sherlockSettingsPath = resolve(sherlockAgentDir, "settings.json");
+	const sherlockAuthPath = resolve(sherlockAgentDir, "auth.json");
+	const { defaultThinkingLevel, launchThinkingLevel } = resolveThinkingConfig(values.thinking ?? process.env.SHERLOCK_AI_THINKING);
 
-	normalizeFeynmanSettings(feynmanSettingsPath, bundledSettingsPath, defaultThinkingLevel, feynmanAuthPath);
+	normalizeSherlockSettings(sherlockSettingsPath, bundledSettingsPath, defaultThinkingLevel, sherlockAuthPath);
 
 	if (values.doctor) {
 		runDoctor({
-			settingsPath: feynmanSettingsPath,
-			authPath: feynmanAuthPath,
+			settingsPath: sherlockSettingsPath,
+			authPath: sherlockAuthPath,
 			sessionDir,
 			workingDir,
 			appRoot,
@@ -578,9 +578,9 @@ export async function main(): Promise<void> {
 			throw new Error(`Unknown setup command: ${rest[0]}`);
 		}
 		await runSetup({
-			settingsPath: feynmanSettingsPath,
+			settingsPath: sherlockSettingsPath,
 			bundledSettingsPath,
-			authPath: feynmanAuthPath,
+			authPath: sherlockAuthPath,
 			workingDir,
 			sessionDir,
 			appRoot,
@@ -591,8 +591,8 @@ export async function main(): Promise<void> {
 
 	if (command === "doctor") {
 		runDoctor({
-			settingsPath: feynmanSettingsPath,
-			authPath: feynmanAuthPath,
+			settingsPath: sherlockSettingsPath,
+			authPath: sherlockAuthPath,
 			sessionDir,
 			workingDir,
 			appRoot,
@@ -602,8 +602,8 @@ export async function main(): Promise<void> {
 
 	if (command === "status") {
 		runStatus({
-			settingsPath: feynmanSettingsPath,
-			authPath: feynmanAuthPath,
+			settingsPath: sherlockSettingsPath,
+			authPath: sherlockAuthPath,
 			sessionDir,
 			workingDir,
 			appRoot,
@@ -612,7 +612,7 @@ export async function main(): Promise<void> {
 	}
 
 	if (command === "model") {
-		await handleModelCommand(rest[0], rest.slice(1), feynmanSettingsPath, feynmanAuthPath);
+		await handleModelCommand(rest[0], rest.slice(1), sherlockSettingsPath, sherlockAuthPath);
 		return;
 	}
 
@@ -622,12 +622,12 @@ export async function main(): Promise<void> {
 	}
 
 	if (command === "packages") {
-		await handlePackagesCommand(rest[0], rest.slice(1), workingDir, feynmanAgentDir);
+		await handlePackagesCommand(rest[0], rest.slice(1), workingDir, sherlockAgentDir);
 		return;
 	}
 
 	if (command === "update") {
-		await handleUpdateCommand(workingDir, feynmanAgentDir, rest[0]);
+		await handleUpdateCommand(workingDir, sherlockAgentDir, rest[0]);
 		return;
 	}
 
@@ -636,46 +636,46 @@ export async function main(): Promise<void> {
 		return;
 	}
 
-	const explicitModelSpec = values.model ?? process.env.FEYNMAN_MODEL;
-	const explicitServiceTier = normalizeServiceTier(values["service-tier"] ?? process.env.FEYNMAN_SERVICE_TIER);
+	const explicitModelSpec = values.model ?? process.env.SHERLOCK_AI_MODEL;
+	const explicitServiceTier = normalizeServiceTier(values["service-tier"] ?? process.env.SHERLOCK_AI_SERVICE_TIER);
 	const mode = values.mode;
 	if (mode !== undefined && mode !== "text" && mode !== "json" && mode !== "rpc") {
 		throw new Error("Unknown mode. Use text, json, or rpc.");
 	}
-	if ((values["service-tier"] ?? process.env.FEYNMAN_SERVICE_TIER) && !explicitServiceTier) {
+	if ((values["service-tier"] ?? process.env.SHERLOCK_AI_SERVICE_TIER) && !explicitServiceTier) {
 		throw new Error("Unknown service tier. Use auto, default, flex, priority, or standard_only.");
 	}
 	if (explicitServiceTier) {
-		process.env.FEYNMAN_SERVICE_TIER = explicitServiceTier;
+		process.env.SHERLOCK_AI_SERVICE_TIER = explicitServiceTier;
 	}
 	if (explicitModelSpec) {
-		const modelRegistry = createModelRegistry(feynmanAuthPath);
+		const modelRegistry = createModelRegistry(sherlockAuthPath);
 		const explicitModel = parseModelSpec(explicitModelSpec, modelRegistry);
 		if (!explicitModel) {
 			throw new Error(`Unknown model: ${explicitModelSpec}`);
 		}
 	}
 
-	const currentModelSpec = getCurrentModelSpec(feynmanSettingsPath);
+	const currentModelSpec = getCurrentModelSpec(sherlockSettingsPath);
 	if (shouldRunInteractiveSetup(
 		explicitModelSpec,
 		currentModelSpec,
 		Boolean(process.stdin.isTTY && process.stdout.isTTY),
-		feynmanAuthPath,
+		sherlockAuthPath,
 	)) {
 		await runSetup({
-			settingsPath: feynmanSettingsPath,
+			settingsPath: sherlockSettingsPath,
 			bundledSettingsPath,
-			authPath: feynmanAuthPath,
+			authPath: sherlockAuthPath,
 			workingDir,
 			sessionDir,
 			appRoot,
 			defaultThinkingLevel,
 		});
-		if (!getCurrentModelSpec(feynmanSettingsPath)) {
+		if (!getCurrentModelSpec(sherlockSettingsPath)) {
 			return;
 		}
-		normalizeFeynmanSettings(feynmanSettingsPath, bundledSettingsPath, defaultThinkingLevel, feynmanAuthPath);
+		normalizeSherlockSettings(sherlockSettingsPath, bundledSettingsPath, defaultThinkingLevel, sherlockAuthPath);
 	}
 
 	const workflowCommandNames = new Set(readPromptSpecs(appRoot).filter((s) => s.topLevelCli).map((s) => s.name));
@@ -683,9 +683,9 @@ export async function main(): Promise<void> {
 	const promptOptions = resolvePiPromptOptions(command, workflowRest, values.prompt, workflowCommandNames);
 	let preLaunchNotice: string | undefined;
 	if (command && workflowCommandNames.has(command) && mode !== "rpc" && mode !== "json" && process.stdout.isTTY) {
-		const effectiveSpec = explicitModelSpec ?? getCurrentModelSpec(feynmanSettingsPath);
+		const effectiveSpec = explicitModelSpec ?? getCurrentModelSpec(sherlockSettingsPath);
 		const providerId = effectiveSpec?.split("/")[0] ?? "";
-		if (effectiveSpec && isLocalModelProvider(feynmanAuthPath, providerId)) {
+		if (effectiveSpec && isLocalModelProvider(sherlockAuthPath, providerId)) {
 			preLaunchNotice = buildLocalModelWorkflowNotice(effectiveSpec, command);
 		}
 	}
@@ -694,8 +694,8 @@ export async function main(): Promise<void> {
 		appRoot,
 		workingDir,
 		sessionDir,
-		feynmanAgentDir,
-		feynmanVersion,
+		sherlockAgentDir,
+		sherlockVersion,
 		mode,
 		thinkingLevel: launchThinkingLevel,
 		explicitModelSpec,

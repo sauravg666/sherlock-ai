@@ -83,7 +83,7 @@ for (const scenario of CASES) {
 		const patched = patchPiSubagentsSource(scenario.file, scenario.input);
 
 		assert.match(patched, /function resolvePiAgentDir\(\): string \{/);
-		assert.match(patched, /process\.env\.FEYNMAN_CODING_AGENT_DIR\?\.trim\(\) \|\| process\.env\.PI_CODING_AGENT_DIR\?\.trim\(\)/);
+		assert.match(patched, /process\.env\.SHERLOCK_AI_CODING_AGENT_DIR\?\.trim\(\) \|\| process\.env\.PI_CODING_AGENT_DIR\?\.trim\(\)/);
 		assert.ok(patched.includes(scenario.expected));
 		assert.ok(!patched.includes(scenario.original));
 	});
@@ -274,7 +274,7 @@ test("patchPiSubagentsSource documents output in top-level parallel help", () =>
 	assert.doesNotMatch(patched, /function resolvePiAgentDir/);
 });
 
-test("patchPiSubagentsSource makes pi-spawn prefer the real Pi CLI over Feynman wrapper", () => {
+test("patchPiSubagentsSource makes pi-spawn prefer the real Pi CLI over Sherlock wrapper", () => {
 	const input = [
 		"export function resolveWindowsPiCliScript(deps: PiSpawnDeps = {}): string | undefined {",
 		"\tconst existsSync = deps.existsSync ?? fs.existsSync;",
@@ -292,7 +292,7 @@ test("patchPiSubagentsSource makes pi-spawn prefer the real Pi CLI over Feynman 
 
 	const patched = patchPiSubagentsSource("pi-spawn.ts", input);
 
-	assert.match(patched, /process\.env\.FEYNMAN_PI_CLI_PATH/);
+	assert.match(patched, /process\.env\.SHERLOCK_AI_PI_CLI_PATH/);
 	assert.match(patched, /path\.basename\(argvPath\) !== "pi-cli-wrapper\.js"/);
 	assert.doesNotMatch(patched, /resolvePiAgentDir/);
 });

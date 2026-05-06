@@ -9,15 +9,15 @@ import { PI_WEB_ACCESS_PATCH_TARGETS, patchPiWebAccessSource } from "./lib/pi-we
 import { PI_SUBAGENTS_PATCH_TARGETS, patchPiSubagentsSource, stripPiSubagentBuiltinModelSource } from "./lib/pi-subagents-patch.mjs";
 
 const appRoot = resolve(import.meta.dirname, "..");
-const settingsPath = resolve(appRoot, ".feynman", "settings.json");
+const settingsPath = resolve(appRoot, ".sherlock-ai", "settings.json");
 const packageJsonPath = resolve(appRoot, "package.json");
 const packageLockPath = resolve(appRoot, "package-lock.json");
-const feynmanDir = resolve(appRoot, ".feynman");
-const workspaceDir = resolve(appRoot, ".feynman", "npm");
+const sherlockDir = resolve(appRoot, ".sherlock-ai");
+const workspaceDir = resolve(appRoot, ".sherlock-ai", "npm");
 const workspaceNodeModulesDir = resolve(workspaceDir, "node_modules");
 const manifestPath = resolve(workspaceDir, ".runtime-manifest.json");
 const workspacePackageJsonPath = resolve(workspaceDir, "package.json");
-const workspaceArchivePath = resolve(feynmanDir, "runtime-workspace.tgz");
+const workspaceArchivePath = resolve(sherlockDir, "runtime-workspace.tgz");
 const PRUNE_VERSION = 6;
 const PINNED_RUNTIME_PACKAGES = [
 	"@mariozechner/pi-agent-core",
@@ -126,7 +126,7 @@ function writeWorkspacePackageJson() {
 		workspacePackageJsonPath,
 		JSON.stringify(
 			{
-				name: "feynman-runtime",
+				name: "sherlock-ai-runtime",
 				private: true,
 			},
 			null,
@@ -294,7 +294,7 @@ function archiveIsCurrent() {
 function createWorkspaceArchive() {
 	rmSync(workspaceArchivePath, { force: true });
 
-	const result = spawnSync("tar", ["-czf", workspaceArchivePath, "-C", feynmanDir, "npm"], {
+	const result = spawnSync("tar", ["-czf", workspaceArchivePath, "-C", sherlockDir, "npm"], {
 		stdio: "inherit",
 	});
 	if (result.status !== 0) {
@@ -305,21 +305,21 @@ function createWorkspaceArchive() {
 const packageSpecs = readPackageSpecs();
 
 if (workspaceIsCurrent(packageSpecs)) {
-	console.log("[feynman] vendored runtime workspace already up to date");
+	console.log("[sherlock-ai] vendored runtime workspace already up to date");
 	if (patchBundledPiAgentCore() || patchBundledPiTui() || patchBundledPiWebAccess() || patchBundledPiSubagents()) {
 		writeManifest(packageSpecs);
-		console.log("[feynman] patched bundled Pi runtime");
+		console.log("[sherlock-ai] patched bundled Pi runtime");
 	}
 	if (archiveIsCurrent()) {
 		process.exit(0);
 	}
-	console.log("[feynman] refreshing runtime workspace archive...");
+	console.log("[sherlock-ai] refreshing runtime workspace archive...");
 	createWorkspaceArchive();
-	console.log("[feynman] runtime workspace archive ready");
+	console.log("[sherlock-ai] runtime workspace archive ready");
 	process.exit(0);
 }
 
-console.log("[feynman] preparing vendored runtime workspace...");
+console.log("[sherlock-ai] preparing vendored runtime workspace...");
 prepareWorkspace(packageSpecs);
 pruneWorkspace();
 patchBundledPiAgentCore();
@@ -328,4 +328,4 @@ patchBundledPiWebAccess();
 patchBundledPiSubagents();
 writeManifest(packageSpecs);
 createWorkspaceArchive();
-console.log("[feynman] vendored runtime workspace ready");
+console.log("[sherlock-ai] vendored runtime workspace ready");

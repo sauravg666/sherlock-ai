@@ -1,15 +1,15 @@
 ---
 title: Web Search
-description: Web search routing, configuration, and usage within Feynman.
+description: Web search routing, configuration, and usage within Sherlock.
 section: Tools
 order: 2
 ---
 
-Feynman's web search tool retrieves current information from the web during research workflows. It supports multiple simultaneous queries, domain filtering, recency filtering, and optional full-page content retrieval. The researcher agent uses web search alongside AlphaXiv to gather evidence from non-academic sources like blog posts, documentation, news, and code repositories.
+Sherlock's web search tool retrieves current information from the web during research workflows. It supports multiple simultaneous queries, domain filtering, recency filtering, and optional full-page content retrieval. The researcher agent uses web search alongside AlphaXiv to gather evidence from non-academic sources like blog posts, documentation, news, and code repositories.
 
 ## Routing modes
 
-Feynman supports three web search backends. You can configure which one to use or let Feynman choose automatically:
+Sherlock supports three web search backends. You can configure which one to use or let Sherlock choose automatically:
 
 | Mode | Description |
 | --- | --- |
@@ -20,19 +20,19 @@ Feynman supports three web search backends. You can configure which one to use o
 
 ## Default behavior
 
-The default path does not read Chromium or Chrome cookies and does not request macOS Keychain access. In `auto` mode, Feynman uses API-backed search providers when they are configured: Exa first, then Perplexity, then Gemini API.
+The default path does not read Chromium or Chrome cookies and does not request macOS Keychain access. In `auto` mode, Sherlock uses API-backed search providers when they are configured: Exa first, then Perplexity, then Gemini API.
 
-Configure an explicit API key for Exa, Perplexity, or Gemini in `~/.feynman/web-search.json` before running source-heavy workflows like `/deepresearch`.
+Configure an explicit API key for Exa, Perplexity, or Gemini in `~/.sherlock-ai/web-search.json` before running source-heavy workflows like `/deepresearch`.
 
 ## Configuration
 
 Check the current search configuration:
 
 ```bash
-feynman search status
+sherlock-ai search status
 ```
 
-Edit `~/.feynman/web-search.json` to configure the backend:
+Edit `~/.sherlock-ai/web-search.json` to configure the backend:
 
 ```json
 {
@@ -44,9 +44,9 @@ Edit `~/.feynman/web-search.json` to configure the backend:
 }
 ```
 
-Set `provider` and `searchProvider` to `auto`, `exa`, `perplexity`, or `gemini`. When using `auto`, Feynman prefers Exa if a key is present, then Perplexity, then Gemini API. You can also run `feynman search set <provider> [api-key]` to write this file.
+Set `provider` and `searchProvider` to `auto`, `exa`, `perplexity`, or `gemini`. When using `auto`, Sherlock prefers Exa if a key is present, then Perplexity, then Gemini API. You can also run `sherlock-ai search set <provider> [api-key]` to write this file.
 
-Gemini Web browser-cookie access is disabled by default. To opt into that legacy fallback, add `"geminiBrowser": true` to `~/.feynman/web-search.json`. On macOS, that can trigger a Keychain prompt from the browser's cookie store, so API keys are the recommended route.
+Gemini Web browser-cookie access is disabled by default. To opt into that legacy fallback, add `"geminiBrowser": true` to `~/.sherlock-ai/web-search.json`. On macOS, that can trigger a Keychain prompt from the browser's cookie store, so API keys are the recommended route.
 
 ## Search features
 

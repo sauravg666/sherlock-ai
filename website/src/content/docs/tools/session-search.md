@@ -1,18 +1,18 @@
 ---
 title: Session Search
-description: Search prior Feynman session transcripts to recall past research.
+description: Search prior Sherlock session transcripts to recall past research.
 section: Tools
 order: 3
 ---
 
-The session search tool recovers prior Feynman work from stored session transcripts. Every Feynman session is persisted to disk, and session search lets you find and reference past research, findings, and generated artifacts without starting over.
+The session search tool recovers prior Sherlock work from stored session transcripts. Every Sherlock session is persisted to disk, and session search lets you find and reference past research, findings, and generated artifacts without starting over.
 
 ## Installation
 
 Session search is an optional package. Install it with:
 
 ```bash
-feynman packages install session-search
+sherlock-ai packages install session-search
 ```
 
 Once installed, the `/search` slash command and automatic session recall become available in all future sessions.
@@ -25,13 +25,13 @@ Inside the REPL, invoke session search directly:
 /search transformer scaling laws
 ```
 
-You can also reference prior work naturally in conversation. Feynman invokes session search automatically when you mention previous research or ask to continue earlier work. For example, saying "pick up where I left off on protein folding" triggers a session search behind the scenes.
+You can also reference prior work naturally in conversation. Sherlock invokes session search automatically when you mention previous research or ask to continue earlier work. For example, saying "pick up where I left off on protein folding" triggers a session search behind the scenes.
 
 ## What it searches
 
 Session search indexes the full contents of your session history:
 
-- Full session transcripts including your prompts and Feynman's responses
+- Full session transcripts including your prompts and Sherlock's responses
 - Tool outputs and agent results from workflows like deep research and literature review
 - Generated artifacts such as drafts, reports, and comparison matrices
 - Metadata like timestamps, topics, and workflow types
@@ -44,4 +44,4 @@ Session search is valuable when you want to pick up a previous research thread w
 
 ## How it works
 
-The `@kaiserlich-dev/pi-session-search` package provides the underlying search and indexing. Sessions are stored in `~/.feynman/sessions/` by default (configurable with `--session-dir`). The index is built incrementally as new sessions complete, so search stays fast even with hundreds of past sessions.
+The `@kaiserlich-dev/pi-session-search` package provides the underlying search and indexing. Sessions are stored in `~/.sherlock-ai/sessions/` by default (configurable with `--session-dir`). The index is built incrementally as new sessions complete, so search stays fast even with hundreds of past sessions.

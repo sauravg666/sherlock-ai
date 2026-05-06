@@ -84,7 +84,7 @@ const TUI_SOURCE = `
 `;
 
 test("patchPiRuntimeNodeModules patches installed Pi runtime files", async () => {
-	const appRoot = mkdtempSync(join(tmpdir(), "feynman-runtime-patches-"));
+	const appRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-runtime-patches-"));
 	const agentLoopPath = join(appRoot, "node_modules", "@mariozechner", "pi-agent-core", "dist", "agent-loop.js");
 	const tuiPath = join(appRoot, "node_modules", "@mariozechner", "pi-tui", "dist", "tui.js");
 	await mkdir(dirname(agentLoopPath), { recursive: true });
@@ -95,7 +95,7 @@ test("patchPiRuntimeNodeModules patches installed Pi runtime files", async () =>
 	assert.equal(patchPiRuntimeNodeModules(appRoot), true);
 
 	const patched = readFileSync(agentLoopPath, "utf8");
-	assert.match(patched, /function normalizeFeynmanToolAlias/);
+	assert.match(patched, /function normalizeSherlockToolAlias/);
 	assert.match(patched, /\["google:search", "web_search"\]/);
 	assert.match(patched, /prepareToolCallArguments\(tool, effectiveToolCall\)/);
 	const patchedTui = readFileSync(tuiPath, "utf8");
@@ -105,7 +105,7 @@ test("patchPiRuntimeNodeModules patches installed Pi runtime files", async () =>
 });
 
 test("patchPiRuntimeNodeModules is a no-op when Pi agent-core is absent", () => {
-	const appRoot = mkdtempSync(join(tmpdir(), "feynman-runtime-patches-missing-"));
+	const appRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-runtime-patches-missing-"));
 
 	assert.equal(patchPiRuntimeNodeModules(appRoot), false);
 });

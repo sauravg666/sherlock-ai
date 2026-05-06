@@ -3,9 +3,9 @@
 set -eu
 
 VERSION="${1:-latest}"
-INSTALL_BIN_DIR="${FEYNMAN_INSTALL_BIN_DIR:-$HOME/.local/bin}"
-INSTALL_APP_DIR="${FEYNMAN_INSTALL_APP_DIR:-$HOME/.local/share/feynman}"
-SKIP_PATH_UPDATE="${FEYNMAN_INSTALL_SKIP_PATH_UPDATE:-0}"
+INSTALL_BIN_DIR="${SHERLOCK_AI_INSTALL_BIN_DIR:-$HOME/.local/bin}"
+INSTALL_APP_DIR="${SHERLOCK_AI_INSTALL_APP_DIR:-$HOME/.local/share/sherlock-ai}"
+SKIP_PATH_UPDATE="${SHERLOCK_AI_INSTALL_SKIP_PATH_UPDATE:-0}"
 path_action="already"
 path_profile=""
 
@@ -95,7 +95,7 @@ download_file() {
     return
   fi
 
-  echo "curl or wget is required to install Feynman." >&2
+  echo "curl or wget is required to install Sherlock." >&2
   exit 1
 }
 
@@ -112,7 +112,7 @@ download_text() {
     return
   fi
 
-  echo "curl or wget is required to install Feynman." >&2
+  echo "curl or wget is required to install Sherlock." >&2
   exit 1
 }
 
@@ -131,8 +131,8 @@ add_to_path() {
     return
   fi
 
-  profile="${FEYNMAN_INSTALL_SHELL_PROFILE:-$HOME/.profile}"
-  if [ -z "${FEYNMAN_INSTALL_SHELL_PROFILE:-}" ]; then
+  profile="${SHERLOCK_AI_INSTALL_SHELL_PROFILE:-$HOME/.profile}"
+  if [ -z "${SHERLOCK_AI_INSTALL_SHELL_PROFILE:-}" ]; then
     case "${SHELL:-}" in
       */zsh)
         profile="$HOME/.zshrc"
@@ -151,7 +151,7 @@ add_to_path() {
   fi
 
   {
-    printf '\n# Added by Feynman installer\n'
+    printf '\n# Added by Sherlock installer\n'
     printf '%s\n' "$path_line"
   } >>"$profile"
   path_action="added"
@@ -159,22 +159,22 @@ add_to_path() {
 
 require_command() {
   if ! command -v "$1" >/dev/null 2>&1; then
-    echo "$1 is required to install Feynman." >&2
+    echo "$1 is required to install Sherlock." >&2
     exit 1
   fi
 }
 
 warn_command_conflict() {
-  expected_path="$INSTALL_BIN_DIR/feynman"
-  resolved_path="$(command -v feynman 2>/dev/null || true)"
+  expected_path="$INSTALL_BIN_DIR/sherlock-ai"
+  resolved_path="$(command -v sherlock-ai 2>/dev/null || true)"
 
   if [ -z "$resolved_path" ]; then
     return
   fi
 
   if [ "$resolved_path" != "$expected_path" ]; then
-    step "Warning: current shell resolves feynman to $resolved_path"
-    step "Run now: export PATH=\"$INSTALL_BIN_DIR:\$PATH\" && hash -r && feynman"
+    step "Warning: current shell resolves sherlock-ai to $resolved_path"
+    step "Run now: export PATH=\"$INSTALL_BIN_DIR:\$PATH\" && hash -r && sherlock-ai"
     step "Or launch directly: $expected_path"
 
     step "If that path is an old package-manager install, remove it or put $INSTALL_BIN_DIR first on PATH."
@@ -185,20 +185,20 @@ resolve_release_metadata() {
   normalized_version="$(normalize_version "$VERSION")"
 
   if [ "$normalized_version" = "latest" ]; then
-    release_page="$(download_text "https://github.com/getcompanion-ai/feynman/releases/latest")"
+    release_page="$(download_text "https://github.com/sauravg666/sherlock-ai/releases/latest")"
     resolved_version="$(printf '%s\n' "$release_page" | sed -n 's@.*releases/tag/v\([0-9][^"<>[:space:]]*\).*@\1@p' | head -n 1)"
 
     if [ -z "$resolved_version" ]; then
-      echo "Failed to resolve the latest Feynman release version." >&2
+      echo "Failed to resolve the latest Sherlock release version." >&2
       exit 1
     fi
   else
     resolved_version="$normalized_version"
   fi
 
-  bundle_name="feynman-${resolved_version}-${asset_target}"
+  bundle_name="sherlock-ai-${resolved_version}-${asset_target}"
   archive_name="${bundle_name}.${archive_extension}"
-  download_url="${FEYNMAN_INSTALL_BASE_URL:-https://github.com/getcompanion-ai/feynman/releases/download/v${resolved_version}}/${archive_name}"
+  download_url="${SHERLOCK_AI_INSTALL_BASE_URL:-https://github.com/sauravg666/sherlock-ai/releases/download/v${resolved_version}}/${archive_name}"
 
   printf '%s\n%s\n%s\n%s\n' "$resolved_version" "$bundle_name" "$archive_name" "$download_url"
 }
@@ -240,7 +240,7 @@ bundle_name="$(printf '%s\n' "$release_metadata" | sed -n '2p')"
 archive_name="$(printf '%s\n' "$release_metadata" | sed -n '3p')"
 download_url="$(printf '%s\n' "$release_metadata" | sed -n '4p')"
 
-step "Installing Feynman ${resolved_version} for ${asset_target}"
+step "Installing Sherlock ${resolved_version} for ${asset_target}"
 
 tmp_dir="$(mktemp -d)"
 cleanup() {
@@ -261,7 +261,7 @@ This usually means the release exists, but not all platform bundles were uploade
 Workarounds:
   - try again after the release finishes publishing
   - pass the latest published version explicitly, e.g.:
-    curl -fsSL https://feynman.is/install | bash -s -- 0.2.31
+    curl -fsSL https://sherlock-ai.dev/install | bash -s -- 0.2.31
 EOF
   exit 1
 fi
@@ -271,35 +271,35 @@ rm -rf "$INSTALL_APP_DIR/$bundle_name"
 run_with_spinner "Extracting ${archive_name}" tar -xzf "$archive_path" -C "$INSTALL_APP_DIR"
 
 mkdir -p "$INSTALL_BIN_DIR"
-step "Linking feynman into $INSTALL_BIN_DIR"
-cat >"$INSTALL_BIN_DIR/feynman" <<EOF
+step "Linking sherlock-ai into $INSTALL_BIN_DIR"
+cat >"$INSTALL_BIN_DIR/sherlock-ai" <<EOF
 #!/bin/sh
 set -eu
-exec "$INSTALL_APP_DIR/$bundle_name/feynman" "\$@"
+exec "$INSTALL_APP_DIR/$bundle_name/sherlock-ai" "\$@"
 EOF
-chmod 0755 "$INSTALL_BIN_DIR/feynman"
+chmod 0755 "$INSTALL_BIN_DIR/sherlock-ai"
 
 add_to_path
 
 case "$path_action" in
   added)
     step "PATH updated for future shells in $path_profile"
-    step "Run now: export PATH=\"$INSTALL_BIN_DIR:\$PATH\" && hash -r && feynman"
+    step "Run now: export PATH=\"$INSTALL_BIN_DIR:\$PATH\" && hash -r && sherlock-ai"
     ;;
   configured)
     step "PATH is already configured for future shells in $path_profile"
-    step "Run now: export PATH=\"$INSTALL_BIN_DIR:\$PATH\" && hash -r && feynman"
+    step "Run now: export PATH=\"$INSTALL_BIN_DIR:\$PATH\" && hash -r && sherlock-ai"
     ;;
   skipped)
     step "PATH update skipped"
-    step "Run now: export PATH=\"$INSTALL_BIN_DIR:\$PATH\" && hash -r && feynman"
+    step "Run now: export PATH=\"$INSTALL_BIN_DIR:\$PATH\" && hash -r && sherlock-ai"
     ;;
   *)
     step "$INSTALL_BIN_DIR is already on PATH"
-    step "Run: hash -r && feynman"
+    step "Run: hash -r && sherlock-ai"
     ;;
 esac
 
 warn_command_conflict
 
-printf 'Feynman %s installed successfully.\n' "$resolved_version"
+printf 'Sherlock %s installed successfully.\n' "$resolved_version"

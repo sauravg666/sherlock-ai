@@ -15,7 +15,7 @@ Inside the REPL, preview the most recent artifact:
 /preview
 ```
 
-Feynman suggests previewing automatically when you generate artifacts that benefit from rendered output. You can also preview a specific file:
+Sherlock suggests previewing automatically when you generate artifacts that benefit from rendered output. You can also preview a specific file:
 
 ```
 /preview outputs/scaling-laws-brief.md
@@ -26,10 +26,10 @@ Feynman suggests previewing automatically when you generate artifacts that benef
 Preview requires `pandoc` for Markdown-to-HTML and Markdown-to-PDF rendering. Install the preview dependencies with:
 
 ```bash
-feynman setup preview
+sherlock-ai setup preview
 ```
 
-On macOS with Homebrew, the setup command attempts to install pandoc automatically. On Linux, it checks for pandoc in your package manager. If the automatic install does not work, install pandoc manually from [pandoc.org](https://pandoc.org/installing.html) and rerun `feynman setup preview` to verify.
+On macOS with Homebrew, the setup command attempts to install pandoc automatically. On Linux, it checks for pandoc in your package manager. If the automatic install does not work, install pandoc manually from [pandoc.org](https://pandoc.org/installing.html) and rerun `sherlock-ai setup preview` to verify.
 
 ## Supported formats
 

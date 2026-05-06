@@ -37,12 +37,12 @@ function expandHomePath(value: string): string {
 	return value;
 }
 
-function resolveFeynmanAgentDir(): string {
-	const configured = process.env.PI_CODING_AGENT_DIR ?? process.env.FEYNMAN_CODING_AGENT_DIR;
+function resolveSherlockAgentDir(): string {
+	const configured = process.env.PI_CODING_AGENT_DIR ?? process.env.SHERLOCK_AI_CODING_AGENT_DIR;
 	if (configured?.trim()) {
 		return resolve(expandHomePath(configured.trim()));
 	}
-	return resolve(homedir(), ".feynman", "agent");
+	return resolve(homedir(), ".sherlock-ai", "agent");
 }
 
 function formatModelSpec(model: { provider: string; id: string }): string {
@@ -221,12 +221,12 @@ async function selectOption<T>(
 	return options.find((option) => option.label === selected)?.value;
 }
 
-export function registerFeynmanModelCommand(pi: ExtensionAPI): void {
-	pi.registerCommand("feynman-model", {
-		description: "Open Feynman model menu (main + per-subagent overrides).",
+export function registerSherlockModelCommand(pi: ExtensionAPI): void {
+	pi.registerCommand("sherlock-ai-model", {
+		description: "Open Sherlock model menu (main + per-subagent overrides).",
 		handler: async (_args, ctx) => {
 			if (!ctx.hasUI) {
-				ctx.ui.notify("feynman-model requires interactive mode.", "error");
+				ctx.ui.notify("sherlock-ai-model requires interactive mode.", "error");
 				return;
 			}
 
@@ -240,7 +240,7 @@ export function registerFeynmanModelCommand(pi: ExtensionAPI): void {
 					return;
 				}
 
-				const agentDir = resolveFeynmanAgentDir();
+				const agentDir = resolveSherlockAgentDir();
 				const subagentConfigs = listSubagentModelConfigs(agentDir);
 				const currentMain = ctx.model ? formatModelSpec(ctx.model) : "(none)";
 

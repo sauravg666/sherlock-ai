@@ -20,10 +20,10 @@ function Normalize-Version {
 }
 
 function Resolve-LatestReleaseVersion {
-  $page = Invoke-WebRequest -Uri "https://github.com/getcompanion-ai/feynman/releases/latest"
+  $page = Invoke-WebRequest -Uri "https://github.com/sauravg666/sherlock-ai/releases/latest"
   $match = [regex]::Match($page.Content, 'releases/tag/v([0-9][^"''<>\s]*)')
   if (-not $match.Success) {
-    throw "Failed to resolve the latest Feynman release version."
+    throw "Failed to resolve the latest Sherlock release version."
   }
 
   return $match.Groups[1].Value
@@ -44,9 +44,9 @@ function Resolve-ReleaseMetadata {
     $resolvedVersion = $normalizedVersion
   }
 
-  $bundleName = "feynman-$resolvedVersion-$AssetTarget"
+  $bundleName = "sherlock-ai-$resolvedVersion-$AssetTarget"
   $archiveName = "$bundleName.$BundleExtension"
-  $baseUrl = if ($env:FEYNMAN_INSTALL_BASE_URL) { $env:FEYNMAN_INSTALL_BASE_URL } else { "https://github.com/getcompanion-ai/feynman/releases/download/v$resolvedVersion" }
+  $baseUrl = if ($env:SHERLOCK_AI_INSTALL_BASE_URL) { $env:SHERLOCK_AI_INSTALL_BASE_URL } else { "https://github.com/sauravg666/sherlock-ai/releases/download/v$resolvedVersion" }
 
   return [PSCustomObject]@{
     ResolvedVersion = $resolvedVersion
@@ -87,11 +87,11 @@ $bundleName = $release.BundleName
 $archiveName = $release.ArchiveName
 $downloadUrl = $release.DownloadUrl
 
-$installRoot = Join-Path $env:LOCALAPPDATA "Programs\feynman"
+$installRoot = Join-Path $env:LOCALAPPDATA "Programs\sherlock-ai"
 $installBinDir = Join-Path $installRoot "bin"
 $bundleDir = Join-Path $installRoot $bundleName
 
-$tmpDir = Join-Path ([System.IO.Path]::GetTempPath()) ("feynman-install-" + [System.Guid]::NewGuid().ToString("N"))
+$tmpDir = Join-Path ([System.IO.Path]::GetTempPath()) ("sherlock-ai-install-" + [System.Guid]::NewGuid().ToString("N"))
 New-Item -ItemType Directory -Path $tmpDir | Out-Null
 
 try {
@@ -110,7 +110,7 @@ This usually means the release exists, but not all platform bundles were uploade
 Workarounds:
   - try again after the release finishes publishing
   - pass the latest published version explicitly, e.g.:
-    & ([scriptblock]::Create((irm https://feynman.is/install.ps1))) -Version 0.2.31
+    & ([scriptblock]::Create((irm https://sherlock-ai.dev/install.ps1))) -Version 0.2.31
 "@
   }
 
@@ -124,17 +124,17 @@ Workarounds:
 
   New-Item -ItemType Directory -Path $installBinDir -Force | Out-Null
 
-  $shimPath = Join-Path $installBinDir "feynman.cmd"
-  $shimPs1Path = Join-Path $installBinDir "feynman.ps1"
-  Write-Host "==> Linking feynman into $installBinDir"
+  $shimPath = Join-Path $installBinDir "sherlock-ai.cmd"
+  $shimPs1Path = Join-Path $installBinDir "sherlock-ai.ps1"
+  Write-Host "==> Linking sherlock-ai into $installBinDir"
   @"
 @echo off
-CALL "$bundleDir\feynman.cmd" %*
+CALL "$bundleDir\sherlock-ai.cmd" %*
 "@ | Set-Content -Path $shimPath -Encoding ASCII
 
   @"
 `$BundleDir = "$bundleDir"
-& "`$BundleDir\node\node.exe" "`$BundleDir\app\bin\feynman.js" @args
+& "`$BundleDir\node\node.exe" "`$BundleDir\app\bin\sherlock-ai.js" @args
 "@ | Set-Content -Path $shimPs1Path -Encoding UTF8
 
   $currentUserPath = [Environment]::GetEnvironmentVariable("Path", "User")
@@ -149,20 +149,20 @@ CALL "$bundleDir\feynman.cmd" %*
       "$currentUserPath;$installBinDir"
     }
     [Environment]::SetEnvironmentVariable("Path", $updatedPath, "User")
-    Write-Host "Updated user PATH. Open a new shell to run feynman."
+    Write-Host "Updated user PATH. Open a new shell to run sherlock-ai."
   } else {
     Write-Host "$installBinDir is already on PATH."
   }
 
-  $resolvedCommand = Get-Command feynman -ErrorAction SilentlyContinue
+  $resolvedCommand = Get-Command sherlock-ai -ErrorAction SilentlyContinue
   if ($resolvedCommand -and $resolvedCommand.Source -ne $shimPath) {
-    Write-Warning "Current shell resolves feynman to $($resolvedCommand.Source)"
+    Write-Warning "Current shell resolves sherlock-ai to $($resolvedCommand.Source)"
     Write-Host "Run in a new shell, or run: `$env:Path = '$installBinDir;' + `$env:Path"
-    Write-Host "Then run: feynman"
+    Write-Host "Then run: sherlock-ai"
     Write-Host "If that path is an old package-manager install, remove it or put $installBinDir first on PATH."
   }
 
-  Write-Host "Feynman $resolvedVersion installed successfully."
+  Write-Host "Sherlock $resolvedVersion installed successfully."
 } finally {
   if (Test-Path $tmpDir) {
     Remove-Item -Recurse -Force $tmpDir

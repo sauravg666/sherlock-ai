@@ -29,7 +29,7 @@ The writer maintains citation integrity throughout the document. Every factual c
 
 ## Iteration
 
-The writer supports iterative refinement. After producing an initial draft, you can ask Feynman to revise specific sections, add more detail on a subtopic, restructure the argument, or adjust the tone and level of technical detail. Each revision preserves the citation links and document structure.
+The writer supports iterative refinement. After producing an initial draft, you can ask Sherlock to revise specific sections, add more detail on a subtopic, restructure the argument, or adjust the tone and level of technical detail. Each revision preserves the citation links and document structure.
 
 ## Used by
 

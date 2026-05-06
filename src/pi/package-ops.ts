@@ -6,7 +6,7 @@ import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { DefaultPackageManager, SettingsManager } from "@mariozechner/pi-coding-agent";
 
 import { NATIVE_PACKAGE_SOURCES, supportsNativePackageSources } from "./package-presets.js";
-import { applyFeynmanPackageManagerEnv, getFeynmanNpmPrefixPath } from "./runtime.js";
+import { applySherlockPackageManagerEnv, getSherlockNpmPrefixPath } from "./runtime.js";
 import { getPathWithCurrentNode, resolveExecutable } from "../system/executables.js";
 
 type PackageScope = "user" | "project";
@@ -50,7 +50,7 @@ const FILTERED_INSTALL_OUTPUT_PATTERNS = [
 const APP_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
 
 function createPackageContext(workingDir: string, agentDir: string) {
-	applyFeynmanPackageManagerEnv(agentDir);
+	applySherlockPackageManagerEnv(agentDir);
 	process.env.PATH = getPathWithCurrentNode(process.env.PATH);
 	const settingsManager = SettingsManager.create(workingDir, agentDir);
 	const packageManager = new DefaultPackageManager({
@@ -127,7 +127,7 @@ function dedupeNpmSources(sources: string[], updateToLatest: boolean): string[] 
 }
 
 function ensureProjectInstallRoot(workingDir: string): string {
-	const installRoot = resolve(workingDir, ".feynman", "npm");
+	const installRoot = resolve(workingDir, ".sherlock-ai", "npm");
 	mkdirSync(installRoot, { recursive: true });
 
 	const ignorePath = join(installRoot, ".gitignore");
@@ -137,7 +137,7 @@ function ensureProjectInstallRoot(workingDir: string): string {
 
 	const packageJsonPath = join(installRoot, "package.json");
 	if (!existsSync(packageJsonPath)) {
-		writeFileSync(packageJsonPath, JSON.stringify({ name: "feynman-packages", private: true }, null, 2) + "\n", "utf8");
+		writeFileSync(packageJsonPath, JSON.stringify({ name: "sherlock-ai-packages", private: true }, null, 2) + "\n", "utf8");
 	}
 
 	return installRoot;
@@ -205,7 +205,7 @@ async function runPackageManagerInstall(
 	];
 
 	if (scope === "user") {
-		args.push("-g", "--prefix", getFeynmanNpmPrefixPath(agentDir));
+		args.push("-g", "--prefix", getSherlockNpmPrefixPath(agentDir));
 	} else {
 		args.push("--prefix", ensureProjectInstallRoot(workingDir));
 	}
@@ -237,7 +237,7 @@ async function runPackageManagerInstall(
 				if (suppressKnownNativeFailureOutput) {
 					reject(
 						new Error(
-							"Installing pi-generative-ui failed. Its native glimpseui dependency did not compile against the current macOS/Xcode toolchain. Try the npm-installed Feynman path with your local Node toolchain or skip this optional preset for now.",
+							"Installing pi-generative-ui failed. Its native glimpseui dependency did not compile against the current macOS/Xcode toolchain. Try the npm-installed Sherlock path with your local Node toolchain or skip this optional preset for now.",
 						),
 					);
 					return;
@@ -263,7 +263,7 @@ function isBundledWorkspacePackagePath(installedPath: string | undefined, appRoo
 		return false;
 	}
 
-	const bundledRoot = resolve(appRoot, ".feynman", "npm", "node_modules");
+	const bundledRoot = resolve(appRoot, ".sherlock-ai", "npm", "node_modules");
 	return installedPath.startsWith(bundledRoot);
 }
 
@@ -609,12 +609,12 @@ export function seedBundledWorkspacePackages(
 	appRoot: string,
 	sources: string[],
 ): string[] {
-	const bundledNodeModulesRoot = resolve(appRoot, ".feynman", "npm", "node_modules");
+	const bundledNodeModulesRoot = resolve(appRoot, ".sherlock-ai", "npm", "node_modules");
 	if (!existsSync(bundledNodeModulesRoot)) {
 		return [];
 	}
 
-	const globalNodeModulesRoot = resolve(getFeynmanNpmPrefixPath(agentDir), "lib", "node_modules");
+	const globalNodeModulesRoot = resolve(getSherlockNpmPrefixPath(agentDir), "lib", "node_modules");
 	const seeded: string[] = [];
 	const bundledPackageNames = listBundledWorkspacePackageNames(bundledNodeModulesRoot);
 	const newlySeededPackageNames = new Set<string>();

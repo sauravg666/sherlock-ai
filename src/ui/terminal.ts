@@ -1,4 +1,4 @@
-import { FEYNMAN_ASCII_LOGO } from "../../logo.mjs";
+import { SHERLOCK_AI_ASCII_LOGO } from "../../logo.mjs";
 
 export const RESET = "\x1b[0m";
 const BOLD = "\x1b[1m";
@@ -8,7 +8,7 @@ function rgb(red: number, green: number, blue: number): string {
 	return `\x1b[38;2;${red};${green};${blue}m`;
 }
 
-// Match the outer CLI to the bundled Feynman Pi theme instead of generic magenta panels.
+// Match the outer CLI to the bundled Sherlock Pi theme instead of generic magenta panels.
 const INK = rgb(211, 198, 170);
 const STONE = rgb(157, 169, 160);
 export const ASH = rgb(133, 146, 137);
@@ -44,7 +44,7 @@ export function printSection(title: string): void {
 
 export function printAsciiHeader(subtitleLines: string[] = []): void {
 	console.log("");
-	for (const line of FEYNMAN_ASCII_LOGO) {
+	for (const line of SHERLOCK_AI_ASCII_LOGO) {
 		console.log(paint(`  ${line}`, TEAL, BOLD));
 	}
 	for (const line of subtitleLines) {

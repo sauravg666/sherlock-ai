@@ -13,10 +13,10 @@ test("summarize prompt exposes configurable window and threshold knobs", () => {
 	assert.match(summarizePrompt, /--tier1-threshold\s+<chars>/i);
 	assert.match(summarizePrompt, /--tier2-threshold\s+<chars>/i);
 
-	assert.match(summarizePrompt, /FEYNMAN_SUMMARIZE_WINDOW_CHARS/i);
-	assert.match(summarizePrompt, /FEYNMAN_SUMMARIZE_OVERLAP_CHARS/i);
-	assert.match(summarizePrompt, /FEYNMAN_SUMMARIZE_TIER1_THRESHOLD/i);
-	assert.match(summarizePrompt, /FEYNMAN_SUMMARIZE_TIER2_THRESHOLD/i);
+	assert.match(summarizePrompt, /SHERLOCK_AI_SUMMARIZE_WINDOW_CHARS/i);
+	assert.match(summarizePrompt, /SHERLOCK_AI_SUMMARIZE_OVERLAP_CHARS/i);
+	assert.match(summarizePrompt, /SHERLOCK_AI_SUMMARIZE_TIER1_THRESHOLD/i);
+	assert.match(summarizePrompt, /SHERLOCK_AI_SUMMARIZE_TIER2_THRESHOLD/i);
 
 	assert.match(summarizePrompt, /window-size\s*>\s*overlap/i);
 	assert.match(summarizePrompt, /tier1-threshold\s*<\s*tier2-threshold/i);

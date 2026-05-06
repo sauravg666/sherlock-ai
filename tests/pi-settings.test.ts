@@ -16,7 +16,7 @@ import {
 	shouldPruneLegacyDefaultPackages,
 	supportsNativePackageSources,
 } from "../src/pi/package-presets.js";
-import { normalizeFeynmanSettings, normalizeThinkingLevel } from "../src/pi/settings.js";
+import { normalizeSherlockSettings, normalizeThinkingLevel } from "../src/pi/settings.js";
 
 test("normalizeThinkingLevel accepts the latest Pi thinking levels", () => {
 	assert.equal(normalizeThinkingLevel("off"), "off");
@@ -32,8 +32,8 @@ test("normalizeThinkingLevel rejects unknown values", () => {
 	assert.equal(normalizeThinkingLevel(undefined), undefined);
 });
 
-test("normalizeFeynmanSettings seeds the fast core package set", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-settings-"));
+test("normalizeSherlockSettings seeds the fast core package set", () => {
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-settings-"));
 	const settingsPath = join(root, "settings.json");
 	const bundledSettingsPath = join(root, "bundled-settings.json");
 	const authPath = join(root, "auth.json");
@@ -41,14 +41,14 @@ test("normalizeFeynmanSettings seeds the fast core package set", () => {
 	writeFileSync(bundledSettingsPath, "{}\n", "utf8");
 	writeFileSync(authPath, "{}\n", "utf8");
 
-	normalizeFeynmanSettings(settingsPath, bundledSettingsPath, "medium", authPath);
+	normalizeSherlockSettings(settingsPath, bundledSettingsPath, "medium", authPath);
 
 	const settings = JSON.parse(readFileSync(settingsPath, "utf8")) as { packages?: string[] };
 	assert.deepEqual(settings.packages, [...CORE_PACKAGE_SOURCES]);
 });
 
-test("normalizeFeynmanSettings prunes the legacy slow default package set", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-settings-"));
+test("normalizeSherlockSettings prunes the legacy slow default package set", () => {
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-settings-"));
 	const settingsPath = join(root, "settings.json");
 	const bundledSettingsPath = join(root, "bundled-settings.json");
 	const authPath = join(root, "auth.json");
@@ -70,14 +70,14 @@ test("normalizeFeynmanSettings prunes the legacy slow default package set", () =
 	writeFileSync(bundledSettingsPath, "{}\n", "utf8");
 	writeFileSync(authPath, "{}\n", "utf8");
 
-	normalizeFeynmanSettings(settingsPath, bundledSettingsPath, "medium", authPath);
+	normalizeSherlockSettings(settingsPath, bundledSettingsPath, "medium", authPath);
 
 	const settings = JSON.parse(readFileSync(settingsPath, "utf8")) as { packages?: string[] };
 	assert.deepEqual(settings.packages, [...CORE_PACKAGE_SOURCES]);
 });
 
-test("normalizeFeynmanSettings prunes the removed telemetry default package", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-settings-"));
+test("normalizeSherlockSettings prunes the removed telemetry default package", () => {
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-settings-"));
 	const settingsPath = join(root, "settings.json");
 	const bundledSettingsPath = join(root, "bundled-settings.json");
 	const authPath = join(root, "auth.json");
@@ -99,7 +99,7 @@ test("normalizeFeynmanSettings prunes the removed telemetry default package", ()
 	writeFileSync(bundledSettingsPath, "{}\n", "utf8");
 	writeFileSync(authPath, "{}\n", "utf8");
 
-	normalizeFeynmanSettings(settingsPath, bundledSettingsPath, "medium", authPath);
+	normalizeSherlockSettings(settingsPath, bundledSettingsPath, "medium", authPath);
 
 	const settings = JSON.parse(readFileSync(settingsPath, "utf8")) as { packages?: string[] };
 	assert.deepEqual(settings.packages, [...CORE_PACKAGE_SOURCES]);
@@ -136,8 +136,8 @@ test("supportsNativePackageSources disables sqlite-backed packages on Node 23+",
 	assert.equal(supportsNativePackageSources("24.8.0"), false);
 });
 
-test("normalizeFeynmanSettings prunes native core packages on unsupported Node majors", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-settings-"));
+test("normalizeSherlockSettings prunes native core packages on unsupported Node majors", () => {
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-settings-"));
 	const settingsPath = join(root, "settings.json");
 	const bundledSettingsPath = join(root, "bundled-settings.json");
 	const authPath = join(root, "auth.json");
@@ -159,7 +159,7 @@ test("normalizeFeynmanSettings prunes native core packages on unsupported Node m
 	const originalVersion = process.versions.node;
 	Object.defineProperty(process.versions, "node", { value: "24.0.0", configurable: true });
 	try {
-		normalizeFeynmanSettings(settingsPath, bundledSettingsPath, "medium", authPath);
+		normalizeSherlockSettings(settingsPath, bundledSettingsPath, "medium", authPath);
 	} finally {
 		Object.defineProperty(process.versions, "node", { value: originalVersion, configurable: true });
 	}

@@ -294,12 +294,12 @@ export function buildModelStatusSnapshotFromRecords(
 	if (available.length === 0) {
 		guidance.push("No authenticated Pi models are available yet.");
 		guidance.push(
-			"Run `feynman model login <provider>` (OAuth) or configure an API key (env var, auth.json, or models.json for custom providers).",
+			"Run `sherlock-ai model login <provider>` (OAuth) or configure an API key (env var, auth.json, or models.json for custom providers).",
 		);
-		guidance.push("After auth is in place, rerun `feynman model list` or `feynman setup model`.");
+		guidance.push("After auth is in place, rerun `sherlock-ai model list` or `sherlock-ai setup model`.");
 	} else if (!current) {
 		guidance.push(`No default research model is set. Recommended: ${recommended?.spec}.`);
-		guidance.push("Run `feynman model set <provider/model>` or `feynman setup model`.");
+		guidance.push("Run `sherlock-ai model set <provider/model>` or `sherlock-ai setup model`.");
 	} else if (!currentValid) {
 		guidance.push(`Configured default model is unavailable: ${current}.`);
 		if (recommended) {

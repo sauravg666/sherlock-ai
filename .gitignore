@@ -1,9 +1,9 @@
 node_modules
 .env
-.feynman/npm
-.feynman/git
-.feynman/sessions
-.feynman/schedule-prompts.json
+.sherlock-ai/npm
+.sherlock-ai/git
+.sherlock-ai/sessions
+.sherlock-ai/schedule-prompts.json
 dist
 *.tgz
 outputs/*

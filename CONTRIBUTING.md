@@ -1,25 +1,25 @@
-# Contributing to Feynman
+# Contributing to Sherlock
 
-Feynman is a research-first CLI built on Pi and alphaXiv. This guide is for humans and agents contributing code, prompts, skills, docs, installers, or workflow behavior to the repository.
+Sherlock is a research-first CLI built on Pi and alphaXiv. This guide is for humans and agents contributing code, prompts, skills, docs, installers, or workflow behavior to the repository.
 
 ## Quick Links
 
-- GitHub: https://github.com/getcompanion-ai/feynman
-- Docs: https://feynman.is/docs
+- GitHub: https://github.com/sauravg666/sherlock-ai
+- Docs: https://sherlock-ai.dev/docs
 - Repo agent contract: [AGENTS.md](AGENTS.md)
-- Issues: https://github.com/getcompanion-ai/feynman/issues
+- Issues: https://github.com/sauravg666/sherlock-ai/issues
 
 ## What Goes Where
 
 - CLI/runtime code: `src/`
 - Bundled prompt templates: `prompts/`
 - Bundled Pi skills: `skills/`
-- Bundled Pi subagent prompts: `.feynman/agents/`
+- Bundled Pi subagent prompts: `.sherlock-ai/agents/`
 - Docs site: `website/`
 - Build/release scripts: `scripts/`
 - Generated research artifacts: `outputs/`, `papers/`, `notes/`
 
-If you need to change how bundled subagents behave, edit `.feynman/agents/*.md`. Do not duplicate that behavior in `AGENTS.md`.
+If you need to change how bundled subagents behave, edit `.sherlock-ai/agents/*.md`. Do not duplicate that behavior in `AGENTS.md`.
 
 ## Before You Open a PR
 

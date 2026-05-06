@@ -1,6 +1,6 @@
 import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { getFeynmanHome } from "../config/paths.js";
+import { getSherlockHome } from "../config/paths.js";
 
 export type PiWebSearchProvider = "auto" | "perplexity" | "exa" | "gemini";
 export type PiWebSearchWorkflow = "none" | "summary-review";
@@ -35,8 +35,8 @@ export type PiWebAccessStatus = {
 };
 
 export function getPiWebSearchConfigPath(home?: string): string {
-	const feynmanHome = home ? resolve(home, ".feynman") : getFeynmanHome();
-	return resolve(feynmanHome, "web-search.json");
+	const sherlockHome = home ? resolve(home, ".sherlock-ai") : getSherlockHome();
+	return resolve(sherlockHome, "web-search.json");
 }
 
 function normalizeProvider(value: unknown): PiWebSearchProvider | undefined {
@@ -171,7 +171,7 @@ export function formatPiWebAccessDoctorLines(
 		lines.splice(8, 0, `  gemini browser profile: ${status.chromeProfile}`);
 	}
 	if (!status.configExists) {
-		lines.push("  hint: run `feynman search set <auto|perplexity|exa|gemini> [api-key]` to configure web search");
+		lines.push("  hint: run `sherlock-ai search set <auto|perplexity|exa|gemini> [api-key]` to configure web search");
 	}
 	return lines;
 }

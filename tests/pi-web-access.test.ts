@@ -13,18 +13,18 @@ import {
 } from "../src/pi/web-access.js";
 
 test("loadPiWebAccessConfig returns empty config when Pi web config is missing", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-pi-web-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-pi-web-"));
 	const configPath = getPiWebSearchConfigPath(root);
 
 	assert.deepEqual(loadPiWebAccessConfig(configPath), {});
 });
 
-test("getPiWebSearchConfigPath respects FEYNMAN_HOME semantics", () => {
-	assert.equal(getPiWebSearchConfigPath("/tmp/custom-home"), "/tmp/custom-home/.feynman/web-search.json");
+test("getPiWebSearchConfigPath respects SHERLOCK_AI_HOME semantics", () => {
+	assert.equal(getPiWebSearchConfigPath("/tmp/custom-home"), "/tmp/custom-home/.sherlock-ai/web-search.json");
 });
 
 test("savePiWebAccessConfig merges updates and deletes undefined values", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-pi-web-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-pi-web-"));
 	const configPath = getPiWebSearchConfigPath(root);
 
 	savePiWebAccessConfig({
@@ -44,7 +44,7 @@ test("savePiWebAccessConfig merges updates and deletes undefined values", () => 
 });
 
 test("savePiWebAccessConfig restricts web-search.json permissions", { skip: process.platform === "win32" }, () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-pi-web-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-pi-web-"));
 	const configPath = getPiWebSearchConfigPath(root);
 
 	savePiWebAccessConfig({
@@ -56,9 +56,9 @@ test("savePiWebAccessConfig restricts web-search.json permissions", { skip: proc
 });
 
 test("getPiWebAccessStatus reads Pi web-access config directly", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-pi-web-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-pi-web-"));
 	const configPath = getPiWebSearchConfigPath(root);
-	mkdirSync(join(root, ".feynman"), { recursive: true });
+	mkdirSync(join(root, ".sherlock-ai"), { recursive: true });
 	writeFileSync(
 		configPath,
 		JSON.stringify({
@@ -83,9 +83,9 @@ test("getPiWebAccessStatus reads Pi web-access config directly", () => {
 });
 
 test("getPiWebAccessStatus reads Gemini routes directly", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-pi-web-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-pi-web-"));
 	const configPath = getPiWebSearchConfigPath(root);
-	mkdirSync(join(root, ".feynman"), { recursive: true });
+	mkdirSync(join(root, ".sherlock-ai"), { recursive: true });
 	writeFileSync(
 		configPath,
 		JSON.stringify({
@@ -137,7 +137,7 @@ test("formatPiWebAccessDoctorLines reports Pi-managed web access", () => {
 });
 
 test("getPiWebAccessStatus flags configExists: false when web-search.json is missing", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-pi-web-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-pi-web-"));
 	const configPath = getPiWebSearchConfigPath(root);
 
 	const status = getPiWebAccessStatus(loadPiWebAccessConfig(configPath), configPath);
@@ -145,7 +145,7 @@ test("getPiWebAccessStatus flags configExists: false when web-search.json is mis
 });
 
 test("getPiWebAccessStatus flags configExists: true after web-search.json is written", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-pi-web-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-pi-web-"));
 	const configPath = getPiWebSearchConfigPath(root);
 	savePiWebAccessConfig({ provider: "auto", searchProvider: "auto" }, configPath);
 
@@ -154,7 +154,7 @@ test("getPiWebAccessStatus flags configExists: true after web-search.json is wri
 });
 
 test("formatPiWebAccessDoctorLines marks missing config path and includes a setup hint", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-pi-web-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-pi-web-"));
 	const configPath = getPiWebSearchConfigPath(root);
 
 	const lines = formatPiWebAccessDoctorLines(
@@ -165,13 +165,13 @@ test("formatPiWebAccessDoctorLines marks missing config path and includes a setu
 	assert.ok(configLine, "expected a config path line");
 	assert.ok(configLine!.includes("(not created yet)"), `expected '(not created yet)' marker, got: ${configLine}`);
 	assert.ok(
-		lines.some((line) => line.includes("hint:") && line.includes("feynman search set")),
-		"expected a hint line pointing to `feynman search set`",
+		lines.some((line) => line.includes("hint:") && line.includes("sherlock-ai search set")),
+		"expected a hint line pointing to `sherlock-ai search set`",
 	);
 });
 
 test("formatPiWebAccessDoctorLines omits marker and hint when config exists", () => {
-	const root = mkdtempSync(join(tmpdir(), "feynman-pi-web-"));
+	const root = mkdtempSync(join(tmpdir(), "sherlock-ai-pi-web-"));
 	const configPath = getPiWebSearchConfigPath(root);
 	savePiWebAccessConfig({ provider: "auto", searchProvider: "auto" }, configPath);
 

@@ -22,17 +22,17 @@ From the REPL:
 From the CLI:
 
 ```bash
-feynman review arxiv:2401.12345
-feynman review my-draft.md
+sherlock-ai review arxiv:2401.12345
+sherlock-ai review my-draft.md
 ```
 
-You can pass an arXiv ID, a URL, or a local file path. For arXiv papers, Feynman fetches the source paper directly when the paper tools are available. For local PDFs, Feynman attempts document extraction and records blocked checks if extraction fails.
+You can pass an arXiv ID, a URL, or a local file path. For arXiv papers, Sherlock fetches the source paper directly when the paper tools are available. For local PDFs, Sherlock attempts document extraction and records blocked checks if extraction fails.
 
 ## How it works
 
 The review workflow first writes a plan to `outputs/.plans/<slug>-review-plan.md`, then continues immediately into evidence gathering and final review generation. It does not stop to ask for a "proceed" response unless you explicitly asked to review the plan first.
 
-The workflow reads or fetches the artifact, records evidence notes in `outputs/.drafts/<slug>-review-evidence.md`, and then writes exactly one final review to `outputs/<slug>-review.md`. For larger artifacts it can delegate evidence gathering or review synthesis to Feynman's bundled research agents; for smaller artifacts it performs the review directly to avoid unnecessary orchestration.
+The workflow reads or fetches the artifact, records evidence notes in `outputs/.drafts/<slug>-review-evidence.md`, and then writes exactly one final review to `outputs/<slug>-review.md`. For larger artifacts it can delegate evidence gathering or review synthesis to Sherlock's bundled research agents; for smaller artifacts it performs the review directly to avoid unnecessary orchestration.
 
 The reviewer examines the paper's claims, checks whether the methodology supports the conclusions, evaluates the experimental design for potential confounds, and assesses the clarity and completeness of the writing.
 

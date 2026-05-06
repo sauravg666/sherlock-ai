@@ -13,12 +13,12 @@ const powershellInstallerPath = resolve(appRoot, "scripts", "install", "install-
 test("skills installers expose an OpenCode project-local scope", () => {
 	const shellInstaller = readFileSync(shellInstallerPath, "utf8");
 	assert.match(shellInstaller, /--opencode/);
-	assert.match(shellInstaller, /\.opencode\/skills\/feynman/);
+	assert.match(shellInstaller, /\.opencode\/skills\/sherlock-ai/);
 	assert.match(shellInstaller, /OpenCode project skills will be discovered from \.opencode\/skills/);
 
 	const powershellInstaller = readFileSync(powershellInstallerPath, "utf8");
 	assert.match(powershellInstaller, /ValidateSet\("User", "Repo", "OpenCode"\)/);
-	assert.match(powershellInstaller, /\.opencode\\skills\\feynman/);
+	assert.match(powershellInstaller, /\.opencode\\skills\\sherlock-ai/);
 	assert.match(powershellInstaller, /OpenCode project skills will be discovered from \.opencode\/skills/);
 });
 
@@ -26,7 +26,7 @@ test("skills docs include the OpenCode install target", () => {
 	for (const relativePath of ["README.md", "website/src/content/docs/getting-started/installation.md"]) {
 		const source = readFileSync(resolve(appRoot, relativePath), "utf8");
 		assert.match(source, /--opencode/);
-		assert.match(source, /\.opencode\/skills\/feynman/);
+		assert.match(source, /\.opencode\/skills\/sherlock-ai/);
 		assert.match(source, /Scope OpenCode/);
 	}
 });
@@ -37,8 +37,8 @@ test("Unix skills installer writes OpenCode skills under .opencode", { skip: pro
 		assert.fail("curl or wget is required for the installer smoke test");
 	}
 
-	const tempRoot = mkdtempSync(join(tmpdir(), "feynman-install-skills-"));
-	const sourceRoot = join(tempRoot, "feynman-1.2.3");
+	const tempRoot = mkdtempSync(join(tmpdir(), "sherlock-ai-install-skills-"));
+	const sourceRoot = join(tempRoot, "sherlock-ai-1.2.3");
 	mkdirSync(join(sourceRoot, "skills", "deep-research"), { recursive: true });
 	mkdirSync(join(sourceRoot, "prompts"), { recursive: true });
 	writeFileSync(join(sourceRoot, "skills", "deep-research", "SKILL.md"), "# Deep Research\n", "utf8");
@@ -46,8 +46,8 @@ test("Unix skills installer writes OpenCode skills under .opencode", { skip: pro
 	writeFileSync(join(sourceRoot, "AGENTS.md"), "# Agents\n", "utf8");
 	writeFileSync(join(sourceRoot, "CONTRIBUTING.md"), "# Contributing\n", "utf8");
 
-	const archivePath = join(tempRoot, "feynman-skills.tar.gz");
-	const tarResult = spawnSync("tar", ["-czf", archivePath, "-C", tempRoot, "feynman-1.2.3"], {
+	const archivePath = join(tempRoot, "sherlock-ai-skills.tar.gz");
+	const tarResult = spawnSync("tar", ["-czf", archivePath, "-C", tempRoot, "sherlock-ai-1.2.3"], {
 		encoding: "utf8",
 	});
 	assert.equal(tarResult.status, 0, tarResult.stderr);
@@ -59,14 +59,14 @@ test("Unix skills installer writes OpenCode skills under .opencode", { skip: pro
 		encoding: "utf8",
 		env: {
 			...process.env,
-			FEYNMAN_INSTALL_SKILLS_ARCHIVE_URL: pathToFileURL(archivePath).href,
+			SHERLOCK_AI_INSTALL_SKILLS_ARCHIVE_URL: pathToFileURL(archivePath).href,
 			HOME: join(tempRoot, "home"),
 			CODEX_HOME: join(tempRoot, "codex"),
 		},
 	});
 
 	assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
-	const installDir = join(projectRoot, ".opencode", "skills", "feynman");
+	const installDir = join(projectRoot, ".opencode", "skills", "sherlock-ai");
 	assert.equal(existsSync(join(installDir, "deep-research", "SKILL.md")), true);
 	assert.equal(existsSync(join(installDir, "prompts", "deepresearch.md")), true);
 	assert.match(result.stdout, /OpenCode project skills will be discovered from \.opencode\/skills/);

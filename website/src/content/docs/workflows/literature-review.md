@@ -18,7 +18,7 @@ From the REPL:
 From the CLI:
 
 ```bash
-feynman lit "Scaling laws for language model performance"
+sherlock-ai lit "Scaling laws for language model performance"
 ```
 
 ## How it works
